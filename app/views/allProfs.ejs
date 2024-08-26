@@ -1,0 +1,57 @@
+<% layout('layout') -%>
+
+<h1>Liste des professeurs</h1>
+<hr>
+
+<% var firstLetter= allProfs[0]["_id"].charAt(0) %>
+
+<div class="container">
+
+    <div class="col-lg-12">
+        <h2><%= firstLetter %></h2>
+        <table class="table">
+                <thead class="thead-light">
+                    <tr>
+                        <th scope="col">Professeur</th>
+                        <th scope="col">Note des cours <span class="text-muted">/10</span></th>
+                        <th scope="col">Note pédagogie du prof <span class="text-muted">/10</span></th>
+                        <th scope="col">Moyenne points misés</th>
+                        <th scope="col">Nombre d'avis</th>
+                    </tr>
+                </thead>
+
+        <% var nbProfs = allProfs.length;
+            for(var i=0; i<nbProfs; i++){
+                var firstLetterNewProf = allProfs[i]["_id"].charAt(0);
+                if(firstLetterNewProf != firstLetter){ %>
+                        </table>
+                    </div>
+                    <div class="col-lg-12">
+                        <h2><%= firstLetterNewProf %></h2>
+                        <table class="table" >
+                        <thead class="thead-light">
+                            <tr>
+                                <th scope="col">Professeur</th>
+                                <th scope="col">Note des cours <span class="text-muted">/10</span></th>
+                                <th scope="col">Note pédagogie du prof <span class="text-muted">/10</span></th>
+                                <th scope="col">Moyenne points misés</th>
+                                <th scope="col">Nombre d'avis</th>
+                            </tr>
+                        </thead>
+                        <% firstLetter = firstLetterNewProf;
+                } %>
+
+                <tr>
+                    <td><a href="/prof/<%=allProfs[i]['_id']%>/avis" ><%= allProfs[i]["_id"] %></a></td>
+                    <td><%= Math.trunc(allProfs[i]["moyenneCours"] * 10) / 10 %></td>
+                    <td><%= Math.trunc(allProfs[i]["moyenneProfs"] * 10) / 10 %></td>
+                    <td><%= Math.trunc(allProfs[i]["moyennePoints"] * 10) / 10 %></td>
+                    <td><%= allProfs[i]["nbAvis"] %></td>
+                </tr>
+            <%}%>
+
+        </table>
+
+    </div>    
+
+</div>

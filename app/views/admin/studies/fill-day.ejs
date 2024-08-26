@@ -1,0 +1,261 @@
+<% layout('../layout') -%>
+
+<% var days = ["Semaine Bloquée / Intensive Week", "Lundi / Monday", "Mardi / Tuesday", "Mercredi / Wednesday", "Jeudi / Thursday", "Vendredi / Friday"];
+var nbCourses = courses.length; %>
+
+<h1>Paramètres de l'étude</h1>
+<hr>
+<h2 class="text-secondary">Cours du <%= days[day] %></h2>
+<div class="container">
+        <form method="POST" action="/admin/studies/<%= studyId %>/fill/<%= day %>">
+            <% if(nbCourses == 0){ %>
+            <input type="hidden" value="1" name="nbCourse" id="nbCourse"/>
+            <div id="course-1" class="form-group">
+                <div class="row">
+                    <div class="col-4">
+                        <label for="code-course-1">Code Cours</label>
+                        <div class="row">
+                            <div class="col-8">
+                                    <input type="text" class="form-control" name="code-course-1" id="code-course-1" placeholder="Insérez le code cours">
+                            </div>
+                            <div class="col-4">
+                                    <button id="1-rechercher" onclick="searchCourse(event)" class="btn btn-secondary">Rechercher</button>
+                                </div>
+                        </div>
+                    </div>
+                    <div class="col-8">
+                        <label for="name-course-1">Nom Cours</label>
+                        <div class="row">
+                            <div class="col-8">
+                                    <input type="text" class="form-control" name="name-course-1" id="name-course-1" placeholder="Insérez le nom du cours">
+                            </div>
+                            <div class="col-4">
+                                <p id="success-1" class="text-success" hidden>Cours Trouvé</p>
+                                <p id="failure-1" class="text-danger" hidden>Cours Non Trouvé</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-3">
+                            <label for="prof-course-1">Sélectionnez tous les professeurs (utilisez ctrl sur PC ou cmd sur mac)</label>
+                            <select multiple class="form-control" id="prof-course-1" name="prof-course-1">
+                            </select>
+                    </div>
+                    <div class="col-3">
+                            <label for="add-prof-1-1">Ajouter un 2ème prof</label>
+                            <input type="text" class="form-control" name="add-prof-1-1" id="add-prof-1-1" placeholder="Ajouter un prof">
+                    </div>
+                    <div class="col-3">
+                            <label for="add-prof-1-2">Ajouter un 3ème prof</label>
+                            <input type="text" class="form-control" name="add-prof-1-2" id="add-prof-1-2" placeholder="Ajouter un prof">
+                    </div>
+                    <div class="col-3">
+                            <label for="add-prof-1-3">Ajouter un 4ème prof</label>
+                            <input type="text" class="form-control" name="add-prof-1-3" id="add-prof-1-3" placeholder="Ajouter un prof">
+                    </div>
+                </div>
+                <hr>
+            </div>
+            <% } else{
+                for(var i = 1; i<=nbCourses; i++){ %>
+                        <input type="hidden" value="<%= nbCourses %>" name="nbCourse" id="nbCourse"/>
+                        <div id="course-<%=i%>" class="form-group">
+                            <div class="row">
+                                <div class="col-4">
+                                    <label for="code-course-<%=i%>">Code Cours</label>
+                                    <div class="row">
+                                        <div class="col-8">
+                                                <input type="text" class="form-control" name="code-course-<%=i%>" id="code-course-<%=i%>" placeholder="Insérez le code cours" value="<%= courses[i-1].CodeCours%>">
+                                        </div>
+                                        <div class="col-4">
+                                                <button id="<%=i%>-rechercher" onclick="searchCourse(event)" class="btn btn-secondary">Rechercher</button>
+                                            </div>
+                                    </div>
+                                </div>
+                                <div class="col-8">
+                                    <label for="name-course-<%=i%>">Nom Cours</label>
+                                    <div class="row">
+                                        <div class="col-8">
+                                                <input type="text" class="form-control" name="name-course-<%=i%>" id="name-course-<%=i%>" placeholder="Insérez le nom du cours" value="<%= courses[i-1].NomCours%>">
+                                        </div>
+                                        <div class="col-4">
+                                            <p id="success-<%=i%>" class="text-success" hidden>Cours Trouvé</p>
+                                            <p id="failure-<%=i%>" class="text-danger" hidden>Cours Non Trouvé</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-3">
+                                        <label for="prof-course-<%=i%>">Sélectionnez tous les professeurs (utilisez ctrl sur PC ou cmd sur mac)</label>
+                                        <select multiple class="form-control" id="prof-course-<%=i%>" name="prof-course-<%=i%>">
+                                            <% for(var j=0; j<courses[i-1].Professeur.length; j++){ %>
+                                                <option selected value="<%= courses[i-1].Professeur[j] %>"><%= courses[i-1].Professeur[j] %></option>
+
+                                            <% } %>
+                                        </select>
+                                </div>
+                                <div class="col-3">
+                                        <label for="add-prof-<%=i%>-1">Ajouter un 2ème prof</label>
+                                        <input type="text" class="form-control" name="add-prof-<%=i%>-1" id="add-prof-<%=i%>-1" placeholder="Ajouter un prof">
+                                </div>
+                                <div class="col-3">
+                                        <label for="add-prof-<%=i%>-2">Ajouter un 3ème prof</label>
+                                        <input type="text" class="form-control" name="add-prof-<%=i%>-2" id="add-prof-<%=i%>-2" placeholder="Ajouter un prof">
+                                </div>
+                                <div class="col-3">
+                                        <label for="add-prof-<%=i%>-3">Ajouter un 4ème prof</label>
+                                        <input type="text" class="form-control" name="add-prof-<%=i%>-3" id="add-prof-<%=i%>-3" placeholder="Ajouter un prof">
+                                </div>
+                            </div>
+                            <hr>
+                        </div>
+            <%    }
+            } %>
+
+            <div id="add-delete-course" class="form-group">
+                <button id="add-course-button" type="button" class="btn btn-outline-secondary">Ajouter un cours</button>
+                <button id="delete-course-button" type="button" class="btn btn-outline-secondary" disabled>Supprimer un cours</button>
+            </div>
+            
+            <div class="form-group">
+                <button type="submit" class="btn btn-secondary">Suivant</button>
+            </div>
+            
+        </form>
+</div>
+
+<script>
+
+    document.querySelector("#add-course-button").addEventListener("click", function(event) {
+        var id = parseInt(document.getElementById("nbCourse").value);
+
+        event.preventDefault();
+
+        if(id==1){
+            document.getElementById("delete-course-button").removeAttribute("disabled");
+        }
+
+        id++;
+        document.getElementById("nbCourse").setAttribute("value", id);
+
+        var newDiv = document.createElement('div');
+        newDiv.setAttribute("id", "course-"+id);
+        newDiv.setAttribute("class", "form-group");
+
+        newDiv.innerHTML =
+                `<div class="row">
+                    <div class="col-4">
+                        <label for="code-course-`+id+`">Code Cours</label>
+                        <div class="row">
+                            <div class="col-8">
+                                    <input type="text" class="form-control" name="code-course-`+id+`" id="code-course-`+id+`" placeholder="Insérez le code cours">
+                            </div>
+                            <div class="col-4">
+                                    <button id="`+id+`-rechercher" onclick="searchCourse(event)" class="btn btn-secondary">Rechercher</button>
+                                </div>
+                        </div>
+                    </div>
+                    <div class="col-8">
+                        <label for="name-course-`+id+`">Nom Cours</label>
+                        <div class="row">
+                            <div class="col-8">
+                                    <input type="text" class="form-control" name="name-course-`+id+`" id="name-course-`+id+`" placeholder="Insérez le nom du cours">
+                            </div>
+                            <div class="col-4">
+                                <p id="success-`+id+`" class="text-success" hidden>Cours Trouvé</p>
+                                <p id="failure-`+id+`" class="text-danger" hidden>Cours Non Trouvé</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-3">
+                            <label for="prof-course-`+id+`">Sélectionnez tous les professeurs (utilisez ctrl sur PC ou cmd sur mac)</label>
+                            <select multiple class="form-control" id="prof-course-`+id+`" name="prof-course-`+id+`">
+                            </select>
+                    </div>
+                    <div class="col-3">
+                            <label for="add-prof-`+id+`-1">Ajouter un 2ème prof</label>
+                            <input type="text" class="form-control" name="add-prof-`+id+`-1" id="add-prof-`+id+`-1" placeholder="Ajouter un prof">
+                    </div>
+                    <div class="col-3">
+                            <label for="add-prof-`+id+`-2">Ajouter un 3ème prof</label>
+                            <input type="text" class="form-control" name="add-prof-`+id+`-2" id="add-prof-`+id+`-2" placeholder="Ajouter un prof">
+                    </div>
+                    <div class="col-3">
+                            <label for="add-prof-`+id+`-3">Ajouter un 4ème prof</label>
+                            <input type="text" class="form-control" name="add-prof-`+id+`-3" id="add-prof-`+id+`-3" placeholder="Ajouter un prof">
+                    </div>
+                </div>
+                <hr>`
+
+        document.getElementById("add-delete-course").insertAdjacentElement("beforebegin", newDiv);
+    }, false);
+
+    document.querySelector("#delete-course-button").addEventListener("click", function(event) {
+        event.preventDefault();
+        var id = parseInt(document.getElementById("nbCourse").value);
+        var element = document.getElementById("course-"+id).remove();
+
+        id--;
+        document.getElementById("nbCourse").setAttribute("value", id);
+
+        if(id==1){
+            document.getElementById("delete-course-button").setAttribute("disabled", "");
+        }
+
+    }, false);
+
+</script>
+
+<script>
+    var courses = [];
+
+    socket.emit('requestAllCourses');
+    socket.on('responseAllCourses', function(allCourses){
+        courses = allCourses;
+        console.log(courses);
+    });
+</script>
+
+<script>
+function searchCourse(event){
+    event.preventDefault();
+    var buttonId = event.target.getAttribute("id").substring(0,1);
+    document.getElementById("prof-course-"+buttonId).innerHTML="";
+    document.getElementById("name-course-"+buttonId).value = "";
+
+    var courseFound = 0;
+
+    var codeCours = document.getElementById("code-course-"+buttonId).value;
+    var lengthCourses = courses.length;
+    for(var i = 0; i<lengthCourses; i++)
+    {
+        if(codeCours === courses[i].CodeCours){
+            document.getElementById("name-course-"+buttonId).value = courses[i].NomCours;
+            var nbProfs = courses[i].Professeur.length;
+            for(var j=0; j<nbProfs; j++)
+            {
+                document.getElementById("prof-course-"+buttonId).innerHTML += '<option value="'+courses[i].Professeur[j]+'">'+courses[i].Professeur[j]+'</option>';
+            }
+            courseFound = 1;
+        }
+    }
+
+    if(courseFound ===1){
+        document.getElementById("success-"+buttonId).removeAttribute("hidden");
+        document.getElementById("failure-"+buttonId).setAttribute("hidden", "");
+    }
+    else
+    {
+        document.getElementById("failure-"+buttonId).removeAttribute("hidden");
+        document.getElementById("success-"+buttonId).setAttribute("hidden", "");
+    }
+    console.log(codeCours);
+}
+</script>

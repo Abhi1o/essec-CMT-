@@ -1,0 +1,29 @@
+<% layout('../layout') -%>
+
+<h1>Gestion des utilisateurs</h1>
+<br>
+<% if(info != "") { %>
+        <p class="text-center text-success"><%= info.message %></p>
+    <% } %>
+    <% if(error != "") { %>
+        <p class="text-center text-danger"><%= error.message %></p>
+    <% } %>
+<div class="container">
+    <div class="row justify-content-md-center">
+            <div class="col-6">
+                    <a href="/admin/users/new-one" class="btn btn-secondary btn-lg btn-block">Créer un nouvel utilisateur</a>
+            </div>
+    </div>
+    <br>
+    <div class="row justify-content-md-center">
+            <div class="col-6">
+                    <a href="/admin/users/new-many" class="btn btn-secondary btn-lg btn-block">Créer plusieurs utilisateurs (via excel)</a>
+            </div>
+    </div>
+    <br>
+    <div class="row justify-content-md-center">
+            <div class="col-6">
+                    <a href="/admin/users/search-user" class="btn btn-secondary btn-lg btn-block">Gérer les utilisateurs</button></a>
+            </div>
+    </div>
+</div>

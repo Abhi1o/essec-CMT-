@@ -1,0 +1,411 @@
+
+
+<head>
+
+        <link href="/lib/bootstrap/css/bootstrap.css" rel="stylesheet">
+        <link href="/lib/css/stylesheet.css" rel="stylesheet">
+        <link href="/lib/open-iconic/font/css/open-iconic-bootstrap.css" rel="stylesheet">
+    <!------ Include the above in your HEAD tag ---------->
+    
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css">
+    
+    
+    
+    </head>
+    
+    
+    
+    
+    <body>
+
+       
+    
+            <div class="card bg-light">
+            <div class="card-header text-center">
+                    <h3>Bienvenue sur le site du Court-Mais-Trash</h3>
+            </div>
+            <article class="card-body mx-auto">
+                    <div class="container">
+                <div class="card" >
+                    <div class="card-body" >
+                    <h5 class="card-title">Remplissage du Court-mais-Trash</h5>
+                    
+                    <form method='POST' action='/study/<%= studyId %>/fill'>
+                            <div class="form-row">
+                                    <div class="form-group col-md-4">
+                                        <input type="hidden" value="<%= studyId %>" id="studyId" />
+                                        <label for="inputJour" class="text-secondary">Jour / Day</label>
+                                        <select class="custom-select" name="jour" id="inputJour">
+                                                <option selected>Choisissez le jour</option>
+                                                <option value="Semaine Bloquée / Intensive Week">Semaine Bloquée / Intensive Week</option>
+                                                <option value="Lundi / Monday">Lundi / Monday</option>
+                                                <option value="Mardi / Tuesday">Mardi / Tuesday</option>
+                                                <option value="Mercredi / Wednesday">Mercredi / Wednesday</option>
+                                                <option value="Jeudi / Thursday">Jeudi / Thursday</option>
+                                                <option value="Vendredi / Friday">Vendredi / Friday</option>
+                                        </select>
+                                    </div>
+                            </div>
+                            <fieldset id="disabledFieldset" disabled="disabled">
+                                <div class="form-row">
+                                    <div class="form-group col-md-8">
+                                            <label for="inputNomCours" class="text-secondary">Nom du cours / Course Name</label>
+                                            <select class="custom-select" name="nomCours" id="coursFake">
+                                                    <option selected></option>
+                                            </select>
+                                            <select class="custom-select" name="nomCours" id="coursIntensive" hidden>
+                                                <option selected></option>
+                                            </select>
+                                            <select class="custom-select" name="nomCours" id="coursLundi" hidden>
+                                                    <option selected></option>
+                                            </select>
+                                            <select class="custom-select" name="nomCours" id="coursMardi" hidden>
+                                                    <option selected></option>
+                                            </select>
+                                            <select class="custom-select" name="nomCours" id="coursMercredi" hidden>
+                                                    <option selected></option>
+                                            </select>
+                                            <select class="custom-select" name="nomCours" id="coursJeudi" hidden>
+                                                    <option selected></option>
+                                            </select>
+                                            <select class="custom-select" name="nomCours" id="coursVendredi" hidden>
+                                                    <option selected></option>
+                                            </select>
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label for="inputCodeCours" class="text-secondary">Code Cours / Course Code</label>
+                                        <input type="text" class="form-control" name="codeCours" id="inputCodeCours" readonly="readonly">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-3">
+                                        <label class="text-secondary">Professeur 1</label>
+                                        <select class="custom-select" name="prof1" id="prof1">
+                                                <option selected value=""></option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label class="text-secondary">Professeur 2</label>
+                                        <select class="custom-select" name="prof2" id="prof2">
+                                                <option selected value=""></option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label class="text-secondary">Professeur 3</label>
+                                        <select class="custom-select" name="prof3" id="prof3">
+                                                <option selected value=""></option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label class="text-secondary">Professeur 4</label>
+                                        <select class="custom-select" name="prof4" id="prof4">
+                                                <option selected value=""></option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="form-row">
+                                        <div class="form-group col-md-4">
+                                            <label class="text-secondary">Heure / Hour</label>
+                                            <div class="custom-control custom-radio">
+                                                <input type="radio" id="heure-semaine-bloquee" name="heure" class="custom-control-input" value="-">
+                                                <label class="custom-control-label" for="heure-semaine-bloquee" >Semaine Bloquée / Intensive Week</label>
+                                            </div>
+                                            <div class="custom-control custom-radio">
+                                                <input type="radio" id="heure-9h" name="heure" class="custom-control-input" value="9h - 12h">
+                                                <label class="custom-control-label" for="heure-9h">9h - 12h</label>
+                                            </div>
+                                            <div class="custom-control custom-radio">
+                                                <input type="radio" id="heure-13h" name="heure" class="custom-control-input" value="13h15 - 16h15">
+                                                <label class="custom-control-label" for="heure-13h">13h15 - 16h15</label>
+                                            </div>
+                                            <div class="custom-control custom-radio">
+                                                <input type="radio" id="heure-16h" name="heure" class="custom-control-input" value="16h30 - 19h30">
+                                                <label class="custom-control-label" for="heure-16h">16h30 - 19h30</label>
+                                            </div>
+                                            <br>
+                                            <label class="text-secondary">Nombre de points misés / Number of points bet</label>
+                                            <input class="form-control" type="number" name="points" placeholder="0" min="0" max="140">
+                                        </div>
+                                        <div class="form-group col-md-3">
+                                                <label class="text-secondary">A quel tour avez vous eu le cours / On which round did you get the course </label>
+                                                <div class="custom-control custom-radio">
+                                                    <input type="radio" id="tour1" name="tour" class="custom-control-input" value="1er tour / 1st round">
+                                                    <label class="custom-control-label" for="tour1" >1er tour / 1st round</label>
+                                                </div>
+                                                <div class="custom-control custom-radio">
+                                                    <input type="radio" id="tour2" name="tour" class="custom-control-input" value="2ème tour / 2nd round">
+                                                    <label class="custom-control-label" for="tour2">2ème tour / 2nd round</label>
+                                                </div>
+                                                <div class="custom-control custom-radio">
+                                                    <input type="radio" id="tour3" name="tour" class="custom-control-input" value="3ème tour / 3rd round">
+                                                    <label class="custom-control-label" for="tour3">3ème tour / 3rd round</label>
+                                                </div>
+                                                <br>
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <fieldset disabled>
+                                                <label class="text-secondary">Trimestre</label>
+                                                <div class="custom-control custom-radio">
+                                                    <input type="radio" id="trimestre-T1" name="trimestre" class="custom-control-input" value="T1">
+                                                    <label class="custom-control-label" for="trimestre-T1">T1</label>
+                                                </div>
+                                                <div class="custom-control custom-radio">
+                                                    <input type="radio" id="trimestre-T2" name="trimestre" class="custom-control-input" value="T2">
+                                                    <label class="custom-control-label" for="trimestre-T2">T2</label>
+                                                </div>
+                                                <div class="custom-control custom-radio">
+                                                    <input type="radio" id="trimestre-T3" name="trimestre" class="custom-control-input" value="T3">
+                                                    <label class="custom-control-label" for="trimestre-T3">T3</label>
+                                                </div>
+                                                <br>
+                                                <label class="text-secondary">Année / Year</label>
+                                                <select class="custom-select" name="annee" id="yearSelect">;
+                                                        <option value="2028 - 2029">2028 - 2029</option>
+                                                        <option value="2027 - 2028">2027 - 2028</option>
+                                                        <option value="2026 - 2027">2026 - 2027</option>
+                                                        <option value="2025 - 2026">2025 - 2026</option>
+                                                        <option value="2024 - 2025">2024 - 2025</option>
+                                                        <option value="2023 - 2024">2023 - 2024</option>
+                                                        <option value="2022 - 2023">2022 - 2023</option>
+                                                        <option value="2021 - 2022">2021 - 2022</option>
+                                                        <option value="2020 - 2021">2020 - 2021</option>
+                                                        <option value="2019 - 2020">2019 - 2020</option>
+                                                        <option value="2018 - 2019">2018 - 2019</option>
+                                                        <option value="2017 - 2018">2017 - 2018</option>
+                                                        <option value="2016 - 2017">2016 - 2017</option>
+                                                        <option value="2015 - 2016">2015 - 2016</option>
+                                                </select>
+                                            </fieldset>
+                                            <input type="hidden" name="annee" id="hiddenYear"/>
+                                            <input type="hidden" name="trimestre" id="hiddenTrimestre">
+                                            <input type="hidden" name="bde" id="hiddenBDE">
+                                        </div>
+                                </div>
+                                <hr>
+                                <div class="form-row">
+                                    <div class="form-group col-md-4">
+                                    <label class="text-secondary">Note du cours / Course Rating (/10)</label>
+                                    <select class="custom-select" name="noteCours">
+                                            <option value="0">0</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                            <option value="6">6</option>
+                                            <option value="7">7</option>
+                                            <option value="8">8</option>
+                                            <option value="9">9</option>
+                                            <option value="10">10</option>
+                                    </select>
+                                    </div>
+                                    <div class="form-group col-md-8">
+                                            <label class="text-secondary" for="commentCours">Commentaire du cours / Comments on the course</label>
+                                            <textarea class="form-control" id="commentCours" name="commentCours" rows="3"></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-4">
+                                    <label class="text-secondary">Note du Professeur / Prof Rating (/10)</label>
+                                    <select class="custom-select" name="noteProf">
+                                            <option value="0">0</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                            <option value="6">6</option>
+                                            <option value="7">7</option>
+                                            <option value="8">8</option>
+                                            <option value="9">9</option>
+                                            <option value="10">10</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-8">
+                                            <label class="text-secondary" for="commentProf">Commentaire du professeur / Comments on the prof</label>
+                                            <textarea class="form-control" id="commentProf" name="commentProf" rows="3"></textarea>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-secondary" id="btnEnvoyer">Envoyer</button>
+                            </fieldset>
+                    </form>
+
+                    </div>
+                </div>
+            </div>
+            </article>
+            </div> <!-- card.// -->
+            
+            </div> 
+            <!--container end.//-->
+            
+            <div class="footer">
+                    <div class="container">
+                        <p class="text-center text-muted">Made with <span class="oi oi-heart text-danger"></span> in Cergy, By Havana</p>
+                    </div>
+            </div>
+        
+    </body>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    var socket = io.connect('http://vps-d12f2153.vps.ovh.net:80');
+    // var socket = io.connect('http://localhost:80');
+</script>
+
+<script>
+
+    var studyObject = null;
+    
+    var studyId = document.getElementById('studyId').value;
+
+    socket.emit('requestStudy', studyId);
+
+    socket.on('responseStudy', function(study){
+
+        studyObject = study
+
+        for(var i=0; i<study.Intensive.length; i++){
+            document.getElementById('coursIntensive').innerHTML += '<option value="'+study.Intensive[i].NomCours+'">'+study.Intensive[i].NomCours+'</option>';
+        }
+        for(var i=0; i<study.Lundi.length; i++){
+            document.getElementById('coursLundi').innerHTML += '<option value="'+study.Lundi[i].NomCours+'">'+study.Lundi[i].NomCours+'</option>';
+        }
+        for(var i=0; i<study.Mardi.length; i++){
+            document.getElementById('coursMardi').innerHTML += '<option value="'+study.Mardi[i].NomCours+'">'+study.Mardi[i].NomCours+'</option>';
+        }
+        for(var i=0; i<study.Mercredi.length; i++){
+            document.getElementById('coursMercredi').innerHTML += '<option value="'+study.Mercredi[i].NomCours+'">'+study.Mercredi[i].NomCours+'</option>';
+        }
+        for(var i=0; i<study.Jeudi.length; i++){
+            document.getElementById('coursJeudi').innerHTML += '<option value="'+study.Jeudi[i].NomCours+'">'+study.Jeudi[i].NomCours+'</option>';
+        }
+        for(var i=0; i<study.Vendredi.length; i++){
+            document.getElementById('coursVendredi').innerHTML += '<option value="'+study.Vendredi[i].NomCours+'">'+study.Vendredi[i].NomCours+'</option>';
+        }
+
+        document.getElementById('trimestre-'+study.Trimestre).setAttribute('checked', 'checked');
+        document.getElementById('hiddenTrimestre').value = study.Trimestre;
+
+        document.getElementById('yearSelect').innerHTML += '<option value="'+study.Annee+'" selected>'+study.Annee+'</option>';
+        document.getElementById('hiddenYear').value = study.Annee;
+        document.getElementById('hiddenBDE').value = study.BDE;
+    })
+</script>
+
+<script>
+    document.querySelector("#inputJour").addEventListener("change", function(event) {
+        
+        var selectJour = document.getElementById('inputJour');
+        var days = ['Fake', 'Intensive', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi'];
+
+        if(selectJour.selectedIndex == 0){
+            document.getElementById('disabledFieldset').setAttribute('disabled', 'disabled');
+        }
+        else{
+            document.getElementById('disabledFieldset').removeAttribute('disabled');
+        }
+
+        hideAll();
+
+        document.getElementById('cours'+days[selectJour.selectedIndex]).removeAttribute('hidden');
+
+    }, false);
+
+    function hideAll(){
+        document.getElementById('coursFake').setAttribute('hidden', '');
+        document.getElementById('coursIntensive').setAttribute('hidden', '');
+        document.getElementById('coursLundi').setAttribute('hidden', '');
+        document.getElementById('coursMardi').setAttribute('hidden', '');
+        document.getElementById('coursMercredi').setAttribute('hidden', '');
+        document.getElementById('coursJeudi').setAttribute('hidden', '');
+        document.getElementById('coursVendredi').setAttribute('hidden', '');
+
+        document.getElementById('prof1').innerHTML = "";
+        document.getElementById('prof2').innerHTML = "";
+        document.getElementById('prof3').innerHTML = "";
+        document.getElementById('prof4').innerHTML = "";
+
+        document.getElementById('inputCodeCours').value="";
+    }
+</script>
+
+<script>
+
+    document.querySelector("#coursIntensive").addEventListener("change", function(event) {
+        fillInfos('Intensive');
+    }, false);
+
+    document.querySelector("#coursLundi").addEventListener("change", function(event) {
+        fillInfos('Lundi');
+    }, false);
+
+    document.querySelector("#coursMardi").addEventListener("change", function(event) {
+        fillInfos('Mardi');
+    }, false);
+
+    document.querySelector("#coursMercredi").addEventListener("change", function(event) {
+        fillInfos('Mercredi');
+    }, false);
+
+    document.querySelector("#coursJeudi").addEventListener("change", function(event) {
+        fillInfos('Jeudi');
+    }, false);
+
+    document.querySelector("#coursVendredi").addEventListener("change", function(event) {
+        fillInfos('Vendredi');
+    }, false);
+
+    function fillInfos(day){
+
+        document.getElementById('prof1').innerHTML = "";
+        document.getElementById('prof2').innerHTML = "";
+        document.getElementById('prof3').innerHTML = "";
+        document.getElementById('prof4').innerHTML = "";
+
+        var selectCours = document.getElementById('cours'+day);
+        var nomCours = selectCours.options[selectCours.selectedIndex].value;
+
+        for(var i=0; i<studyObject[day].length; i++){
+            if(studyObject[day][i].NomCours == nomCours)
+            {
+                document.getElementById('inputCodeCours').value = studyObject[day][i].CodeCours;
+
+                document.getElementById('prof1').innerHTML += "<option></option>";
+                document.getElementById('prof2').innerHTML += "<option></option>";
+                document.getElementById('prof3').innerHTML += "<option></option>";
+                document.getElementById('prof4').innerHTML += "<option></option>";
+                
+                for(var j=0; j<studyObject[day][i].Professeur.length; j++)
+                {
+                    document.getElementById('prof1').innerHTML += "<option value='"+studyObject[day][i].Professeur[j]+"'>"+studyObject[day][i].Professeur[j]+"</option>";
+                    document.getElementById('prof2').innerHTML += "<option value='"+studyObject[day][i].Professeur[j]+"'>"+studyObject[day][i].Professeur[j]+"</option>";
+                    document.getElementById('prof3').innerHTML += "<option value='"+studyObject[day][i].Professeur[j]+"'>"+studyObject[day][i].Professeur[j]+"</option>";
+                    document.getElementById('prof4').innerHTML += "<option value='"+studyObject[day][i].Professeur[j]+"'>"+studyObject[day][i].Professeur[j]+"</option>";
+                }
+            }
+        }
+
+    }
+</script>
+
+<script>
+    document.querySelector("#btnEnvoyer").addEventListener("click", function(event) {
+
+        var days = ["Fake", "Intensive", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi"];
+
+        var selectJour = document.getElementById('inputJour');
+
+
+        for(var i = 0; i<days.length; i++){
+            if(i != selectJour.selectedIndex){
+                document.getElementById('cours'+days[i]).remove();
+            } 
+        }
+
+        
+
+    }, false);
+
+</script>

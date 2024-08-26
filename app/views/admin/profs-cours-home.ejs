@@ -1,0 +1,68 @@
+<% layout('layout') -%>
+
+<h1>Gestion des Cours / Profs</h1>
+
+
+
+<nav>
+    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+            <a class="nav-item nav-link active" id="nav-cours-tab" data-toggle="tab" href="#nav-cours" role="tab" aria-controls="nav-cours" aria-selected="true">Cours</a>
+            <a class="nav-item nav-link" id="nav-profs-tab" data-toggle="tab" href="#nav-profs" role="tab" aria-controls="nav-profs" aria-selected="false">Profs</a>
+    </div>
+</nav>
+<div class="tab-content" id="nav-tabContent">
+    <div class="tab-pane fade show active" id="nav-cours" role="tabpanel" aria-labelledby="nav-cours-tab">
+        <br>
+            <div class="container">
+                    <table class="table">
+                            <thead class="thead-light">
+                              <tr>
+                                <th scope="col">Code Cours</th>
+                                <th scope="col">Nom Cours</th>
+                                <th scope="col">Modifier</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                                <% for(var i = 0; i<courses.length ; i++){ %>
+                                    <tr>
+                                        <td><%= courses[i].CodeCours %></td>
+                                        <td><input type="text" class="form-control" value="<%= courses[i].NomCours %>" id="nomCours-<%= courses[i].CodeCours %>"/></td>
+                                        <td>
+                                            <button class="btn btn-secondary mb-2" id="btn-<%= courses[i].CodeCours %>" onclick="modifier('<%= courses[i].CodeCours %>')">Modifier</button>
+                                            <div class="spinner-border" role="status" id="spinner-<%= courses[i].CodeCours %>" hidden>
+                                                    <span class="sr-only">Loading...</span>
+                                            </div>
+                                            <span class="text-success" id="success-<%= courses[i].CodeCours %>" hidden>Modification Ok !</span>
+                                        </td>
+                                    </tr>
+                                <% } %>
+                            </tbody>
+                          </table>
+                </div>
+    </div>
+    <div class="tab-pane fade" id="nav-profs" role="tabpanel" aria-labelledby="nav-profs-tab" >
+    </div>
+</div>
+
+<script>
+
+    function modifier(codeCours){
+
+        var nomCours = document.getElementById('nomCours-'+codeCours).value;
+
+        document.getElementById("spinner-"+codeCours).removeAttribute("hidden");
+        document.getElementById("success-"+codeCours).setAttribute("hidden", "hidden");
+
+        socket.emit('requestModifyCourse', codeCours, nomCours);
+
+    }
+
+    socket.on('responseModifyCourse', function(codeCours){
+
+        document.getElementById("spinner-"+codeCours).setAttribute("hidden", "hidden");
+
+        document.getElementById("success-"+codeCours).removeAttribute("hidden");
+
+    })
+
+</script>

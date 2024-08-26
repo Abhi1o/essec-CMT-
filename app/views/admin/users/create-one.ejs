@@ -1,0 +1,23 @@
+<% layout('../layout') -%>
+
+<h1>Créer un utilisateur</h1>
+<br>
+<div class="container">
+        <p class="text-justify text-secondary">Ce formulaire permet de créer un nouvel utilisateur dans la base du CMT. En effet, tout le monde ne doit avoir accès au CMT : seulement les étudiants en Grande Ecole de l'ESSEC. C'est pourquoi il est important de ne pas ajouter n'importe qui : pas de MS, pas de profs, pas de personne de l'administration...</p>
+        <p class="text-justify text-secondary">Une fois l'utilisateur entré dans la base, il aura la possibilté de créer son propre compte avec son mot de passe via la page d'accueil du CMT</p>
+        <form method="POST" action="/admin/users/new-one">
+            <div class="form-group">
+                <label for="lastname">Nom</label>
+                <input type="text" class="form-control" name="lastname" id="lastname" placeholder="Nom de la personne à ajouter">
+            </div>
+            <div class="form-group">
+                <label for="firstname">Prénom</label>
+                <input type="text" class="form-control" name="firstname" id="firstname" placeholder="Prénom de la personne à ajouter">
+            </div>
+            <div class="form-group">
+                    <label for="bannerid">BannerID</label>
+                    <input type="text" class="form-control" name="bannerid" id="bannerid" placeholder="B00... de la personne à ajouter">
+            </div>
+            <button type="submit" class="btn btn-secondary">Créer l'utilisateur</button>
+        </form>
+</div>

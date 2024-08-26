@@ -1,0 +1,224 @@
+<% layout('layout') -%>
+
+<h1><strong id="nomProf"><%= nomProf %></strong><span class="text-muted h4"> (professeur)</span></h1>
+<div class="row">
+        <div class="col-md-2" align="center">
+            <h6>Moyenne des cours</h6>
+            <button type="button" class="btn btn-outline-primary"><span id="moyenneCours" class="h1">**</span><span class="h6 text-secondary">/10</span></button>
+        </div>
+        <div class="col-md-2" align="center">
+            <h6>Pédagogie du prof</h6>
+            <button type="button" class="btn btn-outline-info"><span id="moyenneProf" class="h1">**</span><span class="h6 text-secondary">/10</span></button>
+        </div>
+        <div class="col-md-3" align="center">
+            <h6>Moyenne points mises</h6>
+            <button type="button" class="btn btn-outline-info"><span id="moyennePointsMises" class="h1">**</span></button>
+        </div>
+        <div class="col-md-2" align="center">
+            <h6>Nombre d'avis</h6>
+            <button type="button" class="btn btn-outline-dark"><span id="nbTotalAvis" class="h1">**</span></button>
+        </div>
+        <div class="col-md-3" align="center">
+                <h6>Nombre de cours enseignés</h6>
+                <button type="button" class="btn btn-outline-secondary"><span id="nbCours" class="h1">**</span></button>
+            </div>
+</div>
+<div class="row mt-3 mx-auto">
+    <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#detailProf">
+            Voir le détail par trimestre
+    </button>
+</div>
+
+
+<% for(var i=0; i< avis.length; i++){%>
+    <br>
+     <% var datePubli = new Date(avis[i].DatePubli) %>
+     <% if(i%2 == 0){ %>
+         <div class="row bg-light">
+     <% } else { %>
+         <div class="row bg-white">
+     <% } %>
+         <hr>
+         
+         <div class="col-md-8">
+             <br>
+             <h5>Commentaire sur le cours</h5>
+             <p class="text-secondary"><%= avis[i].CommentCours %></p>
+             <h5>Commentaire sur le prof</h5>
+             <p class="text-secondary"><%= avis[i].CommentProf %></p>
+             <br>
+            <p class="text-secondary text-right">Avis donné le <%= datePubli.toLocaleDateString() %> à <%= datePubli.toLocaleTimeString() %></p>
+         </div>
+         <div class="col-md-4">
+                 <br>
+                 <div class="card">
+                     <% if(i%2 == 0){ %>
+                         <div class="card-body bg-white">
+                     <% } else { %>
+                         <div class="card-body bg-light">
+                     <% } %>
+                         <ul>
+                                 <li><strong>Cours :</strong> <a href="/cours/<%= avis[i].CodeCours %>/avis"> <%= avis[i].NomCours %></a></li>
+                                 <li><strong>Note Cours :</strong> <%= avis[i].NoteCours %></li>
+                                 <li><strong>Note Professeur :</strong> <%= avis[i].NoteProf %></li>
+                                 <li><strong>Jour : </strong><%= avis[i].Jour %></li>
+                                 <li><strong>Heure :</strong> <%= avis[i].Heure %></li>
+                                 <li><strong>Tour :</strong> <%= avis[i].Tour %></li>
+                                 <li><strong>Points Mises :</strong> <%= avis[i].PointMises %></li>
+                                 <li><strong>Trimestre :</strong> <%= avis[i].Timestre %></li>
+                                 <li><strong>Année : </strong> <%= avis[i].Annee %> (<%= avis[i].BDE %>)</li>
+                         </ul>
+                     </div>
+                 </div>
+                 <br>
+         </div>
+     </div>
+     <hr>
+     <% } %> 
+
+
+           <!-- Modal -->
+<div class="modal fade" id="detailProf" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Infos par trimestre</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div id="infosTrimestre" class="modal-body">
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+            
+        </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    var nomProf = document.getElementById("nomProf").innerHTML;
+
+    socket.emit('requestDetailedRatesByCourse', nomProf);
+
+    socket.on('responseDetailedRatesByCourse', function(detailedRatesByCourse){
+        var nbDetailed = detailedRatesByCourse.length;
+        
+
+        var headerCourse = "";
+        var nbCourses = 0;
+        
+        for(var i=0; i<nbDetailed; i++){
+            if(headerCourse != detailedRatesByCourse[i]["_id"]["CodeCours"])
+            {
+                headerCourse = detailedRatesByCourse[i]["_id"]["CodeCours"];
+                document.getElementById("infosTrimestre").innerHTML += `<h3 id="nomCours-`+i+`"></h3><hr>`
+                document.getElementById("nomCours-"+i).innerHTML = detailedRatesByCourse[i]["_id"]["CodeCours"] + " - <span class='text-muted'>" + detailedRatesByCourse[i]["_id"]["NomCours"] +"</span>";
+                nbCourses++;
+            }
+
+            var color="";
+            if(i%2==0)
+            {
+                color="light";
+            }
+            else
+            {
+                color="white";
+            }
+
+            document.getElementById("infosTrimestre").innerHTML += getModalDetailedCourses(i, color);
+
+            document.getElementById("trimestre-"+i).innerHTML = detailedRatesByCourse[i]["_id"]["Trimestre"] + " - " + detailedRatesByCourse[i]["_id"]["Annee"] + " ("+detailedRatesByCourse[i]["nombreAvis"]+" avis)";
+        
+            document.getElementById("bestCours-"+i).innerHTML = Math.trunc(detailedRatesByCourse[i]["maxCours"] * 10) / 10;
+            document.getElementById("worstCours-"+i).innerHTML = Math.trunc(detailedRatesByCourse[i]["minCours"] * 10) / 10;
+            document.getElementById("avgCours-"+i).innerHTML = Math.trunc(detailedRatesByCourse[i]["avgCours"] * 10) / 10;
+
+            document.getElementById("bestProf-"+i).innerHTML = Math.trunc(detailedRatesByCourse[i]["maxProf"] * 10) / 10;
+            document.getElementById("worstProf-"+i).innerHTML = Math.trunc(detailedRatesByCourse[i]["minProf"] * 10) / 10;
+            document.getElementById("avgProf-"+i).innerHTML = Math.trunc(detailedRatesByCourse[i]["avgProf"] * 10) / 10;
+
+            document.getElementById("maxPoints-"+i).innerHTML = detailedRatesByCourse[i]["maxPoints"];
+            document.getElementById("minPoints-"+i).innerHTML = detailedRatesByCourse[i]["minPoints"];
+            document.getElementById("avgPoints-"+i).innerHTML = Math.trunc(detailedRatesByCourse[i]["avgPoints"] * 10) / 10;
+        }
+
+        document.getElementById("nbCours").innerHTML = nbCourses;
+    })
+
+    socket.emit('requestOverallRatesProf', nomProf);
+
+    socket.on('responseOverallRatesProf', function(overallRatesProf){
+
+        var nbOverallRates = overallRatesProf.length;
+        var moyenneCours = overallRatesProf[0]["avgCours"];
+        var moyenneProf = overallRatesProf[0]["avgProf"];
+        var moyennePoints = overallRatesProf[0]["avgPoints"];
+        var nbAvis = overallRatesProf[0]["nombreAvis"];
+
+        document.getElementById("moyenneCours").innerHTML = Math.trunc(moyenneCours * 10) / 10;
+        document.getElementById("moyenneProf").innerHTML = Math.trunc(moyenneProf * 10) / 10;
+        document.getElementById("moyennePointsMises").innerHTML = Math.trunc(moyennePoints * 10) / 10;
+        document.getElementById("nbTotalAvis").innerHTML = nbAvis;
+        //document.getElementById("nbCours").innerHTML = nbOverallRates;
+    })
+
+    function getModalDetailedCourses(i, color){
+        var modal = 
+                `<div class="container bg-`+color+`">
+                    <h4 id="trimestre-`+i+`">T1 - 2017-2018 (23 avis)</h4>
+                    <div class="container text-muted bg-">
+                        <div class="row ">
+                            <div class="col-md-4" align="center">
+                                    <h6>Note max cours</h6>
+                                    <button type="button" class="btn btn-outline-primary"><span id="bestCours-`+i+`" class="h6">9</span><span class="h6 text-secondary">/10</span></button>
+                            </div>
+                            <div class="col-md-4" align="center">
+                                    <h6>Note min cours</h6>
+                                    <button type="button" class="btn btn-outline-primary"><span id="worstCours-`+i+`" class="h6">0</span><span class="h6 text-secondary">/10</span></button>
+                            </div>
+                            <div class="col-md-4" align="center">
+                                    <h6>Note moyenne cours</h6>
+                                    <button type="button" class="btn btn-outline-primary"><span id="avgCours-`+i+`" class="h6">4.6</span><span class="h6 text-secondary">/10</span></button>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-4" align="center">
+                                    <h6>Note max prof</h6>
+                                    <button type="button" class="btn btn-outline-success"><span id="bestProf-`+i+`" class="h6">9</span><span class="h6 text-secondary">/10</span></button>
+                            </div>
+                            <div class="col-md-4" align="center">
+                                    <h6>Note min prof</h6>
+                                    <button type="button" class="btn btn-outline-success"><span id="worstProf-`+i+`" class="h6">0</span><span class="h6 text-secondary">/10</span></button>
+                            </div>
+                            <div class="col-md-4" align="center">
+                                    <h6>Note moyenne</h6>
+                                    <button type="button" class="btn btn-outline-success"><span id="avgProf-`+i+`" class="h6">3.5</span><span class="h6 text-secondary">/10</span></button>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-4" align="center">
+                                    <h6>Nombre max de points misés</h6>
+                                    <button type="button" class="btn btn-outline-info"><span id="maxPoints-`+i+`" class="h6">23</span></button>
+                            </div>
+                            <div class="col-md-4" align="center">
+                                    <h6>Note min de points misés</h6>
+                                    <button type="button" class="btn btn-outline-info"><span id="minPoints-`+i+`" class="h6">1</span></button>
+                            </div>
+                            <div class="col-md-4" align="center">
+                                    <h6>Moyenne de points misés</h6>
+                                    <button type="button" class="btn btn-outline-info"><span id="avgPoints-`+i+`" class="h6">13.8</span></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br>`;
+
+            return modal;
+    }
+</script>

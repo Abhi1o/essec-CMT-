@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Court-Mais-Trash (CMT) - ESSEC</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #1d9edd;
+            --text-color: #333;
+            --background-color: #f4f4f4;
+            --overlay-color: rgba(0, 0, 0, 0.5);
+            --input-border: #ddd;
+            --input-focus: #a5d8ff;
+            --button-hover: #1788c7;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('/images/LESSEC-Business-School-lance-un-PGE-qui-dure-un-an--850x560.png.webp');
+            background-size: cover;
+            background-position: center;
+            filter: brightness(0.6);
+            z-index: -1;
+        }
+
+        .container {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .login-container {
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 8px;
+            padding: 40px;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            margin-left: 5%;
+            transition: all 0.3s ease;
+        }
+
+        .login-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .header {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            color: var(--primary-color);
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .header p {
+            color: var(--text-color);
+            font-size: 16px;
+            font-weight: 300;
+        }
+
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--input-border);
+        }
+
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--text-color);
+            transition: all 0.3s ease;
+        }
+
+        .tab.active {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: var(--text-color);
+            transition: all 0.3s ease;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid var(--input-border);
+            border-radius: 4px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--input-focus);
+            box-shadow: 0 0 0 3px rgba(29, 158, 221, 0.1);
+        }
+
+        .input-group input:focus + label {
+            color: var(--primary-color);
+        }
+
+        .input-addon {
+            display: flex;
+            align-items: center;
+        }
+
+        .input-addon input {
+            flex-grow: 1;
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+
+        .input-addon span {
+            background-color: #E9ECEF;
+            padding: 10px 15px;
+            border: 2px solid var(--input-border);
+            border-left: none;
+            border-top-right-radius: 8px;
+            border-bottom-right-radius: 8px;
+            color: #6C757D;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 4px;
+            width: 100%;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn:hover {
+            background-color: var(--button-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .forgot-password {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .forgot-password a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .forgot-password a:hover {
+            color: var(--button-hover);
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6c757d;
+        }
+        .form-control {
+            padding-left: 35px;
+        }
+
+        footer {
+            background-color: rgba(51, 51, 51, 0.8);
+            color: white;
+            text-align: center;
+            padding: 10px;
+            margin-top: auto;
+            backdrop-filter: blur(5px);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .login-container {
+                padding: 20px;
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background"></div>
+    <div class="container">
+        <div class="login-container">
+            <div class="header">
+                <h1>Court-Mais-Trash (CMT)</h1>
+                <p>Votre passerelle vers les aperçus des cours ESSEC</p>
+            </div>
+            <div class="tabs">
+                <div class="tab active" onclick="openTab(event, 'login')">Se connecter</div>
+                <div class="tab" onclick="openTab(event, 'register')">Première connexion</div>
+            </div>
+            <div id="login" class="tab-content active">
+                <form id="login-form" method="post" action="/signin">
+                    <% if(typeof infoSignin !== 'undefined' && infoSignin !== "") { %>
+                        <p class="text-center text-success"><%= infoSignin.message %></p>
+                    <% } %>
+                    <% if(typeof errorSignin !== 'undefined' && errorSignin !== "") { %>
+                        <p class="text-center text-danger"><%= errorSignin.message %></p>
+                    <% } %>
+                    <div class="input-group">
+                        <!-- <input type="text" id="bannerID" name="bannerid" placeholder="BannerID (B00...)" required> -->
+                        <div class="input-addon">
+                            <input type="text" id="bannerID" name="bannerid" placeholder="B00..." required>
+                            <span>@essec.edu</span>
+                        </div>
+                        <label for="bannerID">BannerID</label>
+                    </div>
+                    <div class="input-group">
+                        <input type="password" id="password" name="password" placeholder="Mot de passe" required>
+                        <label for="password">Mot de passe</label>
+                    </div>
+                    <button type="submit" class="btn">Se connecter</button>
+                </form>
+                <div class="forgot-password">
+                    <a href="/forgotten-password">Mot de passe oublié ?</a>
+                </div>
+            </div>
+            <div id="register" class="tab-content">
+                <form id="register-form" method="post" action="/signup">
+                    <% if(typeof errorSignup !== 'undefined' && errorSignup !== "") { %>
+                        <p class="text-center text-danger"><%= errorSignup.message %></p>
+                    <% } %>
+                    <div class="input-group">
+                        <input type="text" id="newBannerID" name="bannerid" placeholder="BannerID (B00...)" required>
+                        <label for="newBannerID">BannerID</label>
+                    </div>
+                    <div class="input-group">
+                        <input type="password" id="newPassword" name="password" placeholder="Mot de passe" required>
+                        <label for="newPassword">Mot de passe</label>
+                    </div>
+                    <div class="input-group">
+                        <input type="password" id="retypePassword" name="repassword" placeholder="Retapez le mot de passe" required>
+                        <label for="retypePassword">Retapez le mot de passe</label>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" id="nickname" name="pseudo" placeholder="Pseudo (facultatif)">
+                        <label for="nickname">Pseudo (facultatif)</label>
+                    </div>
+                    <button type="submit" class="btn">Créer un compte</button>
+                </form>
+            </div>
+        </div>
+    </div>
+<!-- 
+    <footer>
+        <p>&copy; 2024 Court-Mais-Trash. Tous droits réservés. | Fait avec ❤️ par BDE Havana</p>
+    </footer> -->
+
+    <script>
+        function openTab(evt, tabName) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            tablinks = document.getElementsByClassName("tab");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            document.getElementById(tabName).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+    </script>
+</body>
+</html>

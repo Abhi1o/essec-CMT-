@@ -1,0 +1,95 @@
+<% layout('../layout') -%>
+
+<h1>Gérer les utilisateurs</h1>
+
+<div class="container form-inline">
+        <div class="form-group mx-sm-3 mb-2">
+          <label class="mr-2">BannerID</label>
+          <input type="text" class="form-control" id="inputBanner" placeholder="B00...">
+          
+        </div>
+        <button id="SearchButton" class="btn btn-secondary mb-2">Rechercher</button>
+</div>
+
+<div id="LoadSpinner" class="container" hidden>
+    <div class="spinner-border" role="status">
+        <span class="sr-only">Loading...</span>
+    </div>
+</div>
+
+<div id="NoUserFound" hidden>
+        <p>Aucun utilisateur trouvé</p>
+</div>
+
+<div class="container" id="tableResult" hidden>
+        <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">BannerID</th>
+                    <th scope="col">Nom</th>
+                    <th scope="col">Prénom</th>
+                    <th scope="col">Activé</th>
+                    <th scope="col">Admin</th>
+                    <th scope="col">Pseudo</th>
+                    <th scope="col">Réinitialiser le <br> mot de passe</th>
+                    <th scope="col">Passer en admin</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td id="bannerID"></td>
+                    <td id="nom"></td>
+                    <td id="prenom"></td>
+                    <td id="active"></td>
+                    <td id="admin"></td>
+                    <td id="pseudo"></td>
+                    <td id="reset">Reset</td>
+                    <td id="make-admin">Rendre Admin</td>
+                  </tr>
+                </tbody>
+              </table>
+</div>
+
+
+<script>
+
+    const button = document.getElementById("SearchButton");
+    var i=0;
+
+    button.onclick = function () {
+        document.getElementById("LoadSpinner").removeAttribute("hidden");
+
+        var bannerID = document.getElementById("inputBanner").value;
+
+        socket.emit('requestSearchUser', bannerID);
+    }
+
+    socket.on('responseSearchUser', function(user){
+
+        document.getElementById("LoadSpinner").setAttribute("hidden", null);
+
+        if(user == null)
+        {
+            document.getElementById("NoUserFound").removeAttribute("hidden");
+            document.getElementById("tableResult").setAttribute("hidden", null);
+        }
+        else{
+
+            console.log(user.Admin);
+
+            document.getElementById("bannerID").innerHTML = user.BannerID
+            document.getElementById("nom").innerHTML = user.Nom
+            document.getElementById("prenom").innerHTML = user.Prenom
+            document.getElementById("active").innerHTML = user.Activated == 1 ? "oui" : "non" ;
+            document.getElementById("admin").innerHTML = user.Admin == 1 ? "oui" : "non" ;
+            document.getElementById("pseudo").innerHTML = user.Pseudo
+            document.getElementById("reset").innerHTML = user.Activated == 1 ? '<a href="/admin/users/'+user.BannerID+'/reset" class="btn btn-warning">Reset Password</a>' : "" ;
+            document.getElementById("make-admin").innerHTML = user.Admin == 1 ?  "Déjà Admin" : '<a href="/admin/users/'+user.BannerID+'/make-admin" class="btn btn-secondary">Rendre Admin</a>';
+
+            document.getElementById("tableResult").removeAttribute("hidden");
+            document.getElementById("NoUserFound").setAttribute("hidden", null);
+        }
+        
+    });
+
+</script>

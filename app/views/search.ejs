@@ -1,0 +1,16 @@
+<% layout('layout') -%>
+
+<h1>Résultat de la recherche : <%= query %></h1>
+
+<div class="container">
+    <% if(courses.length == 0) { %>
+        <p class="text-center text-secondary">Aucun résultat trouvé</p>
+    <% } else{ %>
+        <p class="text-center text-secondary">Il y a <%= courses.length %> résultats</p>
+        <ul class="list-group">
+            <% for(var i =0; i<courses.length ; i++){ %>
+                <li class="list-group-item"><a href="cours/<%= courses[i]['CodeCours'] %>/avis"><%= courses[i]["CodeCours"] %> - <%= courses[i]["NomCours"] %></a></li>
+            <% } %>
+          </ul>
+    <% } %>
+</div>

@@ -1,0 +1,175 @@
+
+<% layout('layout') -%>
+
+<h1><strong><span id="coursID"><%= avis[0].CodeCours %></span></strong> - <span class="text-secondary"><%= avis[0].NomCours %></span></h1>
+<p><a href="http://www3.essec.fr/banner.nsf/urlCours/<%= avis[0].CodeCours%>" target="_blank">Voir le syllabus</a></p>
+
+<div class="row">
+    <div class="col-md-3" align="center">
+        <h6>Note du cours</h6>
+        <button type="button" class="btn btn-outline-primary"><span id="moyenneCours" class="h1">**</span><span class="h6 text-secondary">/10</span></button>
+    </div>
+    <div class="col-md-3" align="center">
+        <h6>Pédagogie des profs</h6>
+        <button type="button" class="btn btn-outline-info"><span id="moyenneProfs" class="h1">**</span><span class="h6 text-secondary">/10</span></button>
+    </div>
+    <div class="col-md-3" align="center">
+        <h6>Moyenne points mises</h6>
+        <button type="button" class="btn btn-outline-info"><span id="moyennePointsMises" class="h1">**</span></button>
+    </div>
+    <div class="col-md-3" align="center">
+        <h6>Nombre d'avis</h6>
+        <button type="button" class="btn btn-outline-dark"><span id="nbTotalAvis" class="h1">**</span></button>
+    </div>
+</div>
+<div class="row mt-3 mx-auto">
+    <div class="col-md-2 mr-2">
+            <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#detailNotes">
+                    Voir le détail des notes
+            </button>
+    </div>
+    <!-- <div class="col-2 ml-2">
+            <a href="/cours/<%= avis[0].CodeCours %>/createAvis" class="btn btn-secondary">
+                    Ajouter un avis
+            </a>
+    </div> --> 
+</div>
+
+<% for(var i=0; i< avis.length; i++){%>
+   <br>
+    <% var datePubli = new Date(avis[i].DatePubli) %>
+    <% if(i%2 == 0){ %>
+        <div class="row bg-light">
+    <% } else { %>
+        <div class="row bg-white">
+    <% } %>
+        <hr>
+        
+        <div class="col-md-8">
+            <br>
+            <h5>Commentaire sur le cours</h5>
+            <p class="text-secondary"><%= avis[i].CommentCours %></p>
+            <h5>Commentaire sur le prof</h5>
+            <p class="text-secondary"><%= avis[i].CommentProf %></p>
+            <br>
+            <p class="text-secondary text-right">Avis donné le <%= datePubli.toLocaleDateString() %> à <%= datePubli.toLocaleTimeString() %></p>
+        </div>
+        <div class="col-md-4">
+                <br>
+                <div class="card">
+                    <% if(i%2 == 0){ %>
+                        <div class="card-body bg-white">
+                    <% } else { %>
+                        <div class="card-body bg-light">
+                    <% } %>
+                        <ul>
+                                <li>
+                                    <strong>Professeur :</strong> 
+                                    <% for(var j=0; j<avis[i].Professeur.length; j++){ %>
+                                        <a href="/prof/<%=avis[i].Professeur[j]%>/avis"><%=avis[i].Professeur[j]%></a>
+                                    <%}%>
+                                </li>
+                                <li><strong>Note Cours :</strong> <%= avis[i].NoteCours %></li>
+                                <li><strong>Note Professeur :</strong> <%= avis[i].NoteProf %></li>
+                                <li><strong>Jour : </strong><%= avis[i].Jour %></li>
+                                <li><strong>Heure :</strong> <%= avis[i].Heure %></li>
+                                <li><strong>Tour :</strong> <%= avis[i].Tour %></li>
+                                <li><strong>Points Mises :</strong> <%= avis[i].PointMises %></li>
+                                <li><strong>Trimestre :</strong> <%= avis[i].Timestre %></li>
+                                <li><strong>Année : </strong><%= avis[i].Annee %> (<%= avis[i].BDE %>)</li>
+                        </ul>
+                    </div>
+                </div>
+                <br>
+        </div>
+    </div>
+    <hr>
+    <% } %> 
+
+      <!-- Modal -->
+<div class="modal fade" id="detailNotes" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel"><span class="text-muted">Notes des professeurs pour</span> <%= avis[0].NomCours %></h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+                <table class="table">
+                        <thead>
+                            <tr align="center">
+                            <th scope="col"></th>
+                            <th scope="col">Moyenne Note Cours</th>
+                            <th scope="col">Moyenne note profs</th>
+                            <th scope="col">Moyenne points mises</th>
+                            <th scope="col">Nombre total d'avis</th>
+                            </tr>
+                        </thead>
+                        <tbody id="notesProfs">
+
+                        </tbody>
+                    </table>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+        </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    var coursID = document.getElementById("coursID").innerHTML;
+
+    socket.emit('requestOverallRates', coursID);
+
+    socket.on('responseOverallRates', function(overallRates){
+
+        var moyenneProfs = 0;
+        var moyenneCours = 0;
+        var moyennePointsMises = 0;
+        var nbTotalAvis = 0;
+        var nbProfs = overallRates.length;
+
+        for (var i = 0 ; i<nbProfs; i++)
+        {
+            moyenneProfs += overallRates[i].moyenneProf * overallRates[i].nbAvis;
+            moyenneCours += overallRates[i].moyenneCours * overallRates[i].nbAvis;
+            moyennePointsMises += overallRates[i].moyennePointsMises * overallRates[i].nbAvis;
+            nbTotalAvis += overallRates[i].nbAvis;
+        }
+
+        moyenneProfs = moyenneProfs / nbTotalAvis;
+        moyenneCours = moyenneCours / nbTotalAvis;
+        moyennePointsMises = moyennePointsMises / nbTotalAvis;
+
+        const rates = {
+            moyenneProfs : moyenneProfs,
+            moyenneCours : moyenneCours,
+            moyennePointsMises : moyennePointsMises,
+            nbTotalAvis : nbTotalAvis
+        }
+
+        document.getElementById("moyenneCours").innerHTML = Math.trunc(moyenneCours * 10) / 10 ;
+        document.getElementById("moyenneProfs").innerHTML = Math.trunc(moyenneProfs * 10) / 10 ;
+        document.getElementById("moyennePointsMises").innerHTML = Math.trunc(moyennePointsMises * 10) / 10 ;
+        document.getElementById("nbTotalAvis").innerHTML = nbTotalAvis;
+
+        var innerNotesProfs="";
+
+        for(var i=0; i<nbProfs; i++){
+            innerNotesProfs += '<tr align="center">';
+                innerNotesProfs += "<td><a href='/prof/"+overallRates[i]["_id"]+"/avis'>"+overallRates[i]["_id"]+"</a></td>";
+                innerNotesProfs += "<td>"+Math.trunc(overallRates[i]["moyenneCours"] * 10) / 10 +"</td>";
+                innerNotesProfs += "<td>"+Math.trunc(overallRates[i]["moyenneProf"] * 10) / 10 +"</td>";
+                innerNotesProfs += "<td>"+Math.trunc(overallRates[i]["moyennePointsMises"] * 10) / 10 +"</td>";
+                innerNotesProfs += "<td>"+overallRates[i]["nbAvis"]+"</td>";
+            innerNotesProfs += "</tr>";
+            document.getElementById("notesProfs").innerHTML += innerNotesProfs;
+            innerNotesProfs="";
+        }
+        //document.getElementById('loader').innerHTML = "";
+    })
+</script>

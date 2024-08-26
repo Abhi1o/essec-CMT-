@@ -1,0 +1,57 @@
+<% layout('layout') -%>
+
+<h1>Liste des cours</h1>
+<hr>
+
+<% var firstLetter= allCourses[0]["_id"]["CodeCours"].charAt(0) %>
+
+<div class="container">
+
+    <div class="col-lg-12">
+        <h2><%= firstLetter %></h2>
+        <table class="table">
+                <thead class="thead-light">
+                    <tr>
+                        <th scope="col">Cours</th>
+                        <th scope="col">Note du cours <span class="text-muted">/10</span></th>
+                        <th scope="col">Note des profs <span class="text-muted">/10</span></th>
+                        <th scope="col">Moyenne points misés</th>
+                        <th scope="col">Nombre d'avis</th>
+                    </tr>
+                </thead>
+
+        <% var nbCourses = allCourses.length;
+            for(var i=0; i<nbCourses; i++){
+                var firstLetterNewCourse = allCourses[i]["_id"]["CodeCours"].charAt(0);
+                if(firstLetterNewCourse != firstLetter){ %>
+                        </table>
+                    </div>
+                    <div class="col-lg-12">
+                        <h2><%= firstLetterNewCourse %></h2>
+                        <table class="table" >
+                        <thead class="thead-light">
+                            <tr>
+                                <th scope="col">Cours</th>
+                                <th scope="col">Note du cours <span class="text-muted">/10</span></th>
+                                <th scope="col">Note des profs <span class="text-muted">/10</span></th>
+                                <th scope="col">Moyenne points misés</th>
+                                <th scope="col">Nombre d'avis</th>
+                            </tr>
+                        </thead>
+                        <% firstLetter = firstLetterNewCourse;
+                } %>
+
+                <tr>
+                    <td><a href="/cours/<%=allCourses[i]['_id']['CodeCours'] %>/avis" ><%= allCourses[i]["_id"]["CodeCours"] %> - <%= allCourses[i]["_id"]["NomCours"] %> </a></td>
+                    <td><%= Math.trunc(allCourses[i]["moyenneCours"] * 10) / 10 %></td>
+                    <td><%= Math.trunc(allCourses[i]["moyenneProfs"] * 10) / 10 %></td>
+                    <td><%= Math.trunc(allCourses[i]["moyennePoints"] * 10) / 10 %></td>
+                    <td><%= allCourses[i]["nbAvis"] %></td>
+                </tr>
+            <%}%>
+
+        </table>
+
+    </div>    
+
+</div>

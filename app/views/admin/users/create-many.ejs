@@ -1,0 +1,51 @@
+<% layout('../layout') -%>
+
+<h1>Créer plusieurs utilisateurs</h1>
+<br>
+<div class="container">
+    <div class="row">
+            <div class="col-6">
+                    <img src="/images/Exemple-Excel.png" class="img-fluid" alt="Responsive image"/>
+            </div>
+            <div class="col-6">
+                <p class="text-justify text-secondary">Ce formulaire permet de créer <strong>plusieurs</strong> nouveaux utilisateur dans la base du CMT. </p>
+                <p class="text-justify text-secondary">
+                    Pour ce faire, voici la marche à suivre :
+                    <ul class="text-secondary">
+                        <li>Créer un fichier excel (type xlsx)</li>
+                        <li>Avoir une seule et unique page dans l'excel</li>
+                        <li>Mettre sur la première ligne en A1 : BannerID, B1 : Nom, C1 : Prenom</li>
+                        <li>Mettre de la 2ème ligne aux suivantes les données des nouvelles personnes à ajouter</li>
+                    </ul>
+                </p>
+                <p class="text-justify text-danger">Respectez bien cette forme, au risque de faire planter la base de donnée et donc le site...</p>
+            </div>
+    </div>
+        
+        <br>
+        <p class="text-justify text-secondary">Une fois les utilisateurs entrés dans la base, il auront la possibilté de créer leurs propres comptes avec leurs mots de passe via la page d'accueil du CMT</p>
+        <form method="POST" action="/admin/users/new-many" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="excelFile">Choisir un fichier Excel</label>
+                <input type="file" class="form-control-file" id="excelFile" name="excelFile">
+                <br>
+                <div class="progress">
+                    <div id="progressBar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+                </div>
+            </div>
+            <br>
+            
+            <div>
+                <button type="submit" class="btn btn-secondary">Envoyer</button>
+            </div>
+        </form>
+</div>
+
+<script>
+    socket.on('progressInsertMany', function(value){
+        var progress = document.getElementById("progressBar");
+        var width = value * 100;
+        progress.setAttribute("style", "width:"+width+"%");
+        console.log(value);
+    })
+</script>

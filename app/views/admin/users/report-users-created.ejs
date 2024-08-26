@@ -1,0 +1,36 @@
+<% layout('../layout') -%>
+
+<h1>Créer plusieurs utilisateurs</h1>
+<br>
+<div class="container">
+        <p class="text-success">Vous avez créé <%= nbDone %> utilisateurs</p>
+        <% if(errors.length == 0){ %>
+            <p class="text-success">il n'y a eu aucune erreur lors de l'importation :</p>
+        <% }else{ %>
+            <p class="text-danger">il y a eu <%= errors.length %> erreurs lors de l'importation. Les voici :</p>
+            <table class="table">
+                    <thead>
+                      <tr>
+                        <th scope="col">Ligne Excel</th>
+                        <th scope="col">BannerID</th>
+                        <th scope="col">Nom</th>
+                        <th scope="col">Prénom</th>
+                        <th scope="col">Message d'erreur</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        <% for(var i = 0; i<errors.length; i++){ %>
+                            <tr>
+                                <td><%= errors[i].ligne %></td>
+                                <td><%= errors[i].bannerID %></td>
+                                <td><%= errors[i].nom %></td>
+                                <td><%= errors[i].prenom %></td>
+                                <td><%= errors[i].erreur %></td>
+                            </tr>
+                        <% } %>
+    
+                    </tbody>
+                  </table>
+        <% } %>
+    <a href="/admin/users" class="btn btn-secondary">Terminer</a>
+</div>

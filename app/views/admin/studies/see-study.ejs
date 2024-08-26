@@ -1,0 +1,327 @@
+<% layout('../layout') -%>
+
+<h1>Etude : <%= study.Trimestre %> - <%= study.Annee %> (<%= study.BDE %>)</h1>
+
+<nav>
+    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+            <a class="nav-item nav-link active" id="nav-avis-tab" data-toggle="tab" href="#nav-avis" role="tab" aria-controls="nav-avis" aria-selected="false">Avis</a>
+            <a class="nav-item nav-link" id="nav-stats-tab" data-toggle="tab" href="#nav-stats" role="tab" aria-controls="nav-stats" aria-selected="false">Statistiques</a>
+            <a class="nav-item nav-link" id="nav-cours-tab" data-toggle="tab" href="#nav-cours" role="tab" aria-controls="nav-cours" aria-selected="true">Cours</a>
+    </div>
+  </nav>
+  <div class="tab-content" id="nav-tabContent">
+    <div class="tab-pane fade" id="nav-cours" role="tabpanel" aria-labelledby="nav-cours-tab">
+        <div class="container">
+            <br>
+            <div class="row">
+                <div class="col-md-4">
+                        <h3 class="text-secondary">Intensive Week</h3>
+                        <hr>
+                        <% var nbCourse = study.Intensive.length;
+                            for(var i=0; i<nbCourse; i++){ %>
+                                <p> - <%= study.Intensive[i].CodeCours %> | <%= study.Intensive[i].NomCours %> | <%= study.Intensive[i].Professeur %></p>
+                        <% } %>
+                </div>
+                <div class="col-md-4">
+                        <h3 class="text-secondary">Lundi</h3>
+                        <hr>
+                        <% var nbCourse = study.Lundi.length;
+                            for(var i=0; i<nbCourse; i++){ %>
+                                <p> - <%= study.Lundi[i].CodeCours %> | <%= study.Lundi[i].NomCours %> | <%= study.Lundi[i].Professeur %></p>
+                        <% } %>
+                </div>
+                <div class="col-md-4">
+                        <h3 class="text-secondary">Mardi</h3>
+                        <hr>
+                        <% var nbCourse = study.Mardi.length;
+                            for(var i=0; i<nbCourse; i++){ %>
+                                <p> - <%= study.Mardi[i].CodeCours %> | <%= study.Mardi[i].NomCours %> | <%= study.Mardi[i].Professeur %></p>
+                        <% } %>
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-md-4">
+                        <h3 class="text-secondary">Mercredi</h3>
+                        <hr>
+                        <% var nbCourse = study.Mercredi.length;
+                            for(var i=0; i<nbCourse; i++){ %>
+                                <p> - <%= study.Mercredi[i].CodeCours %> | <%= study.Mercredi[i].NomCours %> | <%= study.Mercredi[i].Professeur %></p>
+                        <% } %>
+                </div>
+                <div class="col-md-4">
+                        <h3 class="text-secondary">Jeudi</h3>
+                        <hr>
+                        <% var nbCourse = study.Jeudi.length;
+                            for(var i=0; i<nbCourse; i++){ %>
+                                <p> - <%= study.Jeudi[i].CodeCours %> | <%= study.Jeudi[i].NomCours %> | <%= study.Jeudi[i].Professeur %></p>
+                        <% } %>
+                </div>
+                <div class="col-md-4">
+                        <h3 class="text-secondary">Vendredi</h3>
+                        <hr>
+                        <% var nbCourse = study.Vendredi.length;
+                            for(var i=0; i<nbCourse; i++){ %>
+                                <p> - <%= study.Vendredi[i].CodeCours %> | <%= study.Vendredi[i].NomCours %> | <%= study.Vendredi[i].Professeur %></p>
+                        <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="tab-pane fade" id="nav-stats" role="tabpanel" aria-labelledby="nav-stats-tab" >
+        <br>
+        <div class="container" id="tableStatistics">
+            <div class="row">
+                <div class="col" align="center">
+                    <h6>Nombre de réponses</h6>
+                    <button type="button" class="btn btn-outline-dark"><span id="nbAvis" class="h1">**</span></button>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-md-4" align="center">
+                    <h6>Moyenne cours</h6>
+                    <button type="button" class="btn btn-outline-primary"><span id="moyenneCours" class="h1">**</span><span class="h6 text-secondary">/10</span></button>
+                </div>
+                <div class="col-md-4" align="center">
+                    <h6>Moyenne profs</h6>
+                    <button type="button" class="btn btn-outline-info"><span id="moyenneProfs" class="h1">**</span><span class="h6 text-secondary">/10</span></button>
+                </div>
+                <div class="col-md-4" align="center">
+                    <h6>Moyenne points mises</h6>
+                    <button type="button" class="btn btn-outline-secondary"><span id="moyennePointsMises" class="h1">**</span></button>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-md-4" align="center">
+                    <h6>Max cours</h6>
+                    <button type="button" class="btn btn-outline-primary"><span id="maxCours" class="h1">**</span><span class="h6 text-secondary">/10</span></button>
+                </div>
+                <div class="col-md-4" align="center">
+                    <h6>Max profs</h6>
+                    <button type="button" class="btn btn-outline-info"><span id="maxProfs" class="h1">**</span><span class="h6 text-secondary">/10</span></button>
+                </div>
+                <div class="col-md-4" align="center">
+                    <h6>Max points mises</h6>
+                    <button type="button" class="btn btn-outline-secondary"><span id="maxPointsMises" class="h1">**</span></button>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-md-4" align="center">
+                    <h6>Min cours</h6>
+                    <button type="button" class="btn btn-outline-primary"><span id="minCours" class="h1">**</span><span class="h6 text-secondary">/10</span></button>
+                </div>
+                <div class="col-md-4" align="center">
+                    <h6>Min profs</h6>
+                    <button type="button" class="btn btn-outline-info"><span id="minProfs" class="h1">**</span><span class="h6 text-secondary">/10</span></button>
+                </div>
+                <div class="col-md-4" align="center">
+                    <h6>Min points mises</h6>
+                    <button type="button" class="btn btn-outline-secondary"><span id="minPointsMises" class="h1">**</span></button>
+                </div>
+            </div>
+            <br>
+        </div>
+    </div>
+    <div class="tab-pane fade show active" id="nav-avis" role="tabpanel" aria-labelledby="nav-avis-tab">
+        <br>
+        <div class="container" id="tableAvis">
+            <div class="row">
+                <button class="btn btn-warning" id="buttonApprove" hidden onclick="approveAllAvis()">Approuver tous les avis</button>
+                <div class="spinner-border ml-3" role="status" id="spinner" hidden>
+                        <span class="sr-only">Loading...</span>
+                </div>
+                <p id="approvedParagraph" hidden>Tous les avis sont approuvés</p>
+                
+            </div>
+            <br>
+            <div class="row">
+                <a class="badge badge-success text-wrap" style="width: 6rem;" id="buttonExport" href="/admin/study/<%= study.Identifiant %>/export-excel" target="_blank" hidden>Exporter les avis en Excel</a>
+            </div>
+            <hr>
+
+        </div>
+        
+    </div>
+  </div>
+
+
+<br>
+<div class="container">
+    <div class="row">
+        <div class="col-md-1">
+                <a class="btn btn-secondary" href="/admin">Terminer</a>
+        </div>
+        <div class="col-md-1">
+                <a class="btn btn-secondary" href="/admin/studies/<%= study.Identifiant %>/modify">Modifier</a>
+        </div>
+    </div>
+</div>
+
+<span id="studyId" hidden><%= study.Identifiant %></span>
+
+
+<script>
+    var studyId = document.getElementById("studyId").innerHTML;
+
+    var nbNotApproved = 0;
+
+    socket.emit('requestAvisByStudy', studyId);
+    socket.emit('requestStatisticsByStudy', studyId);
+
+    socket.on('responseAvisByStudy', function(avisByStudy){
+        if(avisByStudy == null){
+            document.getElementById("tableAvis").innerHTML = "<p>Il n'y a pas d'avis de publiés pour cette étude pour le moment</p>";
+        }
+        else{
+            for(var i = 0; i<avisByStudy.length; i++){
+
+                if(avisByStudy[i].Approved == 0){
+                    nbNotApproved += 1;
+                }
+
+                var datePubli = new Date(avisByStudy[i].DatePubli);
+
+                document.getElementById('tableAvis').innerHTML +=
+                `
+                    <br>
+                            <div class="row">
+                            <hr>
+                            
+                            <div class="col-md-8">
+                                <br>
+                                <h5>Commentaire sur le cours</h5>
+                                <p class="text-secondary">`+avisByStudy[i].CommentCours+`</p>
+                                <h5>Commentaire sur le prof</h5>
+                                <p class="text-secondary">`+avisByStudy[i].CommentProf+`</p>
+                                <br>
+                                <div>
+                                    <div class="row">
+                                        <button class="btn btn-outline-secondary" id="btn-disapprove-`+avisByStudy[i]._id+`" hidden onclick="disapproveAvis('`+avisByStudy[i]._id+`')">Désapprouver</button>
+                                        <button class="btn btn-warning" id="btn-approve-`+avisByStudy[i]._id+`" hidden onclick="approveAvis('`+avisByStudy[i]._id+`')">Approuver</button>
+                                        <div class="spinner-border ml-3" role="status" id="spinner-`+avisByStudy[i]._id+`" hidden>
+                                                <span class="sr-only">Loading...</span>
+                                        </div>
+                                    </div>
+                                    <p class="text-secondary text-right">Avis donné le `+ datePubli.toLocaleDateString()+` à `+ datePubli.toLocaleTimeString() +` </p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                    <br>
+                                    <div class="card">
+                                            <ul class="mt-3">
+                                                    <li><strong>Professeur :</strong> `+avisByStudy[i].Professeur+`</li>
+                                                    <li><strong>Note Cours :</strong> `+avisByStudy[i].NoteCours+`</li>
+                                                    <li><strong>Note Professeur :</strong> `+ avisByStudy[i].NoteProf+`</li>
+                                                    <li><strong>Jour : </strong> `+avisByStudy[i].Jour+`</li>
+                                                    <li><strong>Heure :</strong> `+ avisByStudy[i].Heure+`</li>
+                                                    <li><strong>Tour :</strong> `+avisByStudy[i].Tour +`</li>
+                                                    <li><strong>Points Mises :</strong> `+ avisByStudy[i].PointMises+`</li>
+                                                    <li><strong>Trimestre :</strong> `+ avisByStudy[i].Timestre+`</li>
+                                                    <li><strong>Année : </strong> `+ avisByStudy[i].Annee+` (`+avisByStudy[i].BDE +`)</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <br>
+                            </div>
+                        </div>
+                        <hr>`
+            
+                if(avisByStudy[i].Approved == 1){
+                    document.getElementById('btn-disapprove-'+avisByStudy[i]._id).removeAttribute("hidden");
+                }
+                else{
+                    document.getElementById('btn-approve-'+avisByStudy[i]._id).removeAttribute("hidden");
+                }
+            }
+
+            if(nbNotApproved >= 1){
+                document.getElementById('buttonApprove').removeAttribute("hidden");
+            }
+            else
+            {
+                document.getElementById('approvedParagraph').removeAttribute("hidden");
+            }
+            document.getElementById('buttonExport').removeAttribute("hidden");
+        }
+    })
+
+    socket.on('responseStatisticsByStudy', function(statisticsByStudy){
+        if(statisticsByStudy == null){
+            document.getElementById("tableStatistics").innerHTML = "<p>Il n'y a pas d'avis de publiés pour cette étude pour le moment</p>";
+        }
+        else{
+            document.getElementById("nbAvis").innerHTML = statisticsByStudy.nombreAvis;
+
+            document.getElementById("minPointsMises").innerHTML = Math.round(statisticsByStudy.minPoints*100)/100;
+            document.getElementById("maxPointsMises").innerHTML = Math.round(statisticsByStudy.maxPoints*100)/100;
+            document.getElementById("moyennePointsMises").innerHTML = Math.round(statisticsByStudy.avgPoints*100)/100;
+
+            document.getElementById("minProfs").innerHTML = Math.round(statisticsByStudy.minProf*100)/100;
+            document.getElementById("maxProfs").innerHTML = Math.round(statisticsByStudy.maxProf*100)/100;
+            document.getElementById("moyenneProfs").innerHTML = Math.round(statisticsByStudy.avgProf*100)/100;
+
+            document.getElementById("minCours").innerHTML = Math.round(statisticsByStudy.minCours*100)/100;
+            document.getElementById("maxCours").innerHTML = Math.round(statisticsByStudy.maxCours*100)/100;
+            document.getElementById("moyenneCours").innerHTML = Math.round(statisticsByStudy.avgCours*100)/100;
+        }
+    })
+
+    function approveAllAvis() {
+        document.getElementById('spinner').removeAttribute("hidden");
+        socket.emit('requestApproveStudyAvis', studyId);
+    }
+
+    socket.on('responseApproveStudyAvis', function(response){
+        document.location.reload(true)
+    });
+
+    function approveAvis(avisId) {
+        document.getElementById('spinner-'+avisId).removeAttribute("hidden");
+        socket.emit('requestApproveAvis', avisId);
+    }
+
+    socket.on('responseApproveAvis', function(avisId){
+        if(avisId != null)
+        {
+            document.getElementById('spinner-'+avisId).setAttribute("hidden", "hidden");
+            document.getElementById('btn-approve-'+avisId).setAttribute("hidden", "hidden");
+            document.getElementById('btn-disapprove-'+avisId).removeAttribute("hidden");
+
+            nbNotApproved--;
+            if(nbNotApproved == 0){
+                document.getElementById('buttonApprove').setAttribute("hidden", "hidden");
+                document.getElementById('approvedParagraph').removeAttribute("hidden");
+            }
+        }
+    });
+
+    function disapproveAvis(avisId) {
+        document.getElementById('spinner-'+avisId).removeAttribute("hidden");
+        socket.emit('requestDisapproveAvis', avisId);
+    }
+
+    socket.on('responseDisapproveAvis', function(avisId){
+        if(avisId != null)
+        {
+            document.getElementById('spinner-'+avisId).setAttribute("hidden", "hidden");
+            document.getElementById('btn-disapprove-'+avisId).setAttribute("hidden", "hidden");
+            document.getElementById('btn-approve-'+avisId).removeAttribute("hidden");
+
+            nbNotApproved++;
+            if(nbNotApproved > 0){
+                document.getElementById('approvedParagraph').setAttribute("hidden", "hidden");
+                document.getElementById('buttonApprove').removeAttribute("hidden");
+            }
+        }
+    });
+
+</script>
+
+<script>
+
+    
+
+</script>

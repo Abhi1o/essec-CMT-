@@ -1,0 +1,56 @@
+<% layout('layout') -%>
+
+<h1>Plateforme d'administration du CMT</h1>
+<br>
+<div class="container">
+    <div class="row justify-content-md-center">
+            <div class="col-6">
+                    <a href="/admin/studies/new-one" class="btn btn-secondary btn-lg btn-block">Créer une nouvelle étude</a>
+            </div>
+    </div>
+    <br>
+    <div class="row">
+        <% if(studies.length == 0){ %>
+                <p class="text-center">Pas d'étude en cours</p>
+        <% }else{ %>
+                <table class="table text-center">
+                        <thead>
+                                <tr>
+                                        <th scope="col">Trimestre</th>
+                                        <th scope="col">Année</th>
+                                        <th scope="col">BDE</th>
+                                        <th scope="col">Date Création</th>
+                                        <th scope="col">Lien de distribution</th>
+                                        <th scope="col">Voir</th>
+                                        <th scope="col">Modifier</th>
+                                        <th scope="col">Activer / Désactiver</th>
+                                </tr>
+                        </thead>
+                        <tbody>
+                                <% for (var i=0; i<studies.length; i++){ 
+                                        var dateCrea = new Date(studies[i].DateCreation) ;%>
+                                        <tr>
+                                                <td scop="row"><%= studies[i].Trimestre %></td>
+                                                <td><%= studies[i].Annee %></td>
+                                                <td><%= studies[i].BDE %></td>
+                                                <td><%= dateCrea.toLocaleDateString() %> - <%= dateCrea.toLocaleTimeString() %></td>
+                                                <% if(studies[i].Activated == 0){ %>
+                                                        <td>Activez l'étude <br>au préalable</td>
+                                                <% }else{%>
+                                                        <td><a href="/study/<%= studies[i].Identifiant %>" target="_blank">Ouvrir le lien</a></td>
+                                                <% } %>
+                                                <td><a href="/admin/studies/<%= studies[i].Identifiant %>" class="btn btn-primary">Voir</a></td>
+                                                <td><a href="/admin/studies/<%= studies[i].Identifiant %>/modify" class="btn btn-secondary">Modifier</a></td>
+                                                <% if(studies[i].Activated == 0){ %>
+                                                        <td><a href="/admin/studies/<%= studies[i]._id %>/activate" class="btn btn-success">Activer</a></td>
+                                                <% }else{%>
+                                                        <td><a href="/admin/studies/<%= studies[i]._id %>/deactivate" class="btn btn-danger">Désactiver</a></td>
+                                                <% } %>
+                                                
+                                        </tr>
+                                <% } %>
+                        </tbody>
+                </table>
+        <% } %>
+    </div>
+</div>

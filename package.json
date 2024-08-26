@@ -1,0 +1,40 @@
+{
+  "name": "cmt-site",
+  "version": "1.0.0",
+  "description": "Site pour les etudiants de l'essec",
+  "main": "index.js",
+  "scripts": {
+    "start": "concurrently \"node app/index.js\" \"node ../api/server.js\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "essec",
+    "cmt"
+  ],
+  "author": "Alaeddine Hajjem",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "busboy": "^0.3.1",
+    "ejs": "^2.6.1",
+    "ejs-locals": "^1.0.2",
+    "excel4node": "^1.7.2",
+    "express": "^4.16.3",
+    "express-fileupload": "^1.1.5",
+    "express-session": "^1.15.6",
+    "morgan": "^1.9.1",
+    "multer": "^1.4.2",
+    "nodemailer": "^5.1.1",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0",
+    "querystring": "^0.2.0",
+    "read-excel-file": "^4.0.1",
+    "request": "^2.88.0",
+    "serve-favicon": "^2.5.0",
+    "socket.io": "^2.1.1",
+    "uuid": "^3.3.2"
+  },
+  "devDependencies": {
+    "concurrently": "^6.2.0"
+  }
+}

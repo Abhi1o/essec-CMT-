@@ -1,0 +1,201 @@
+<% layout('layout') -%>
+
+<h1><strong><span id="coursID">Créer un avis</span></strong> - <span class="text-secondary"><%= course.NomCours %></span></h1>
+
+<form>
+    <div class="form-row">
+        <div class="form-group col-md-4">
+            <label for="inputCodeCours" class="text-secondary">Code Cours</label>
+            <input type="text" class="form-control" id="inputCodeCours" value="<%= course.CodeCours %>" disabled>
+        </div>
+      <div class="form-group col-md-8">
+        <label for="inputNomCours" class="text-secondary">Nom du cours</label>
+        <input type="text" class="form-control" id="inputNomCours" value="<%= course.NomCours %>" disabled>
+      </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-3">
+            <label class="text-secondary">Professeur 1</label>
+            <select class="custom-select" name="prof1">
+                    <option selected value=""></option>
+                    <% for(var i=0; i<course.Professeur.length ; i++){ %>
+                        <option value="<%= course.Professeur[i] %>"><%= course.Professeur[i] %></option>
+                    <% } %>
+            </select>
+        </div>
+        <div class="form-group col-md-3">
+            <label class="text-secondary">Professeur 2</label>
+            <select class="custom-select" name="prof2">
+                    <option selected value=""></option>
+                    <% for(var i=0; i<course.Professeur.length ; i++){ %>
+                        <option value="<%= course.Professeur[i] %>"><%= course.Professeur[i] %></option>
+                    <% } %>
+            </select>
+        </div>
+        <div class="form-group col-md-3">
+            <label class="text-secondary">Professeur 3</label>
+            <select class="custom-select" name="prof3">
+                    <option selected value=""></option>
+                    <% for(var i=0; i<course.Professeur.length ; i++){ %>
+                        <option value="<%= course.Professeur[i] %>"><%= course.Professeur[i] %></option>
+                    <% } %>
+            </select>
+        </div>
+        <div class="form-group col-md-3">
+            <label class="text-secondary">Professeur 4</label>
+            <select class="custom-select" name="prof4">
+                    <option selected value=""></option>
+                    <% for(var i=0; i<course.Professeur.length ; i++){ %>
+                        <option value="<%= course.Professeur[i] %>"><%= course.Professeur[i] %></option>
+                    <% } %>
+            </select>
+        </div>
+    </div>
+    <hr>
+    <div class="form-row">
+            <div class="form-group col-md-3">
+                <label class="text-secondary">Jour</label>
+                <div class="custom-control custom-radio">
+                    <input type="radio" id="semaine-bloquee" name="jour" class="custom-control-input" value="Semaine Bloquée / Intensive Week">
+                    <label class="custom-control-label" for="semaine-bloquee">Semaine Bloquée / Intensive Week</label>
+                </div>
+                <div class="custom-control custom-radio">
+                    <input type="radio" id="lundi" name="jour" class="custom-control-input" value="Lundi / Monday">
+                    <label class="custom-control-label" for="lundi">Lundi / Monday</label>
+                </div>
+                <div class="custom-control custom-radio">
+                    <input type="radio" id="mardi" name="jour" class="custom-control-input" value="Mardi / Tuesday">
+                    <label class="custom-control-label" for="mardi">Mardi / Tuesday</label>
+                </div>
+                <div class="custom-control custom-radio">
+                    <input type="radio" id="mercredi" name="jour" class="custom-control-input" value="Mercredi / Wednesday">
+                    <label class="custom-control-label" for="mercredi">Mercredi / Wednesday</label>
+                </div>
+                <div class="custom-control custom-radio">
+                    <input type="radio" id="jeudi" name="jour" class="custom-control-input" value="Jeudi / Thursday">
+                    <label class="custom-control-label" for="jeudi">Jeudi / Thursday</label>
+                </div>
+                <div class="custom-control custom-radio">
+                    <input type="radio" id="vendredi" name="jour" class="custom-control-input" value="Vendredi / Friday">
+                    <label class="custom-control-label" for="vendredi">Vendredi / Friday</label>
+                </div>
+            </div>
+            <div class="form-group col-md-3">
+                <label class="text-secondary">Heure</label>
+                <div class="custom-control custom-radio">
+                    <input type="radio" id="heure-semaine-bloquee" name="heure" class="custom-control-input" value="-">
+                    <label class="custom-control-label" for="heure-semaine-bloquee" >Semaine Bloquée / Intensive Week</label>
+                </div>
+                <div class="custom-control custom-radio">
+                    <input type="radio" id="heure-9h" name="heure" class="custom-control-input" value="9h / 12h">
+                    <label class="custom-control-label" for="heure-9h">9h / 12h</label>
+                </div>
+                <div class="custom-control custom-radio">
+                    <input type="radio" id="heure-13h" name="heure" class="custom-control-input" value="13h15 / 16h15">
+                    <label class="custom-control-label" for="heure-13h">13h15 / 16h15</label>
+                </div>
+                <div class="custom-control custom-radio">
+                    <input type="radio" id="heure-16h" name="heure" class="custom-control-input" value="16h30 / 19h30">
+                    <label class="custom-control-label" for="heure-16h">16h30 / 19h30</label>
+                </div>
+            </div>
+            <div class="form-group col-md-3">
+                    <label class="text-secondary">A quel tour avez vous eu le cours</label>
+                    <div class="custom-control custom-radio">
+                        <input type="radio" id="tour1" name="tour" class="custom-control-input" value="1er tour / 1st round">
+                        <label class="custom-control-label" for="tour1" >1er tour / 1st round</label>
+                    </div>
+                    <div class="custom-control custom-radio">
+                        <input type="radio" id="tour2" name="tour" class="custom-control-input" value="2ème tour / 2nd round">
+                        <label class="custom-control-label" for="tour2">2ème tour / 2nd round</label>
+                    </div>
+                    <div class="custom-control custom-radio">
+                        <input type="radio" id="tour3" name="tour" class="custom-control-input" value="3ème tour / 3rd round">
+                        <label class="custom-control-label" for="tour3">3ème tour / 3rd round</label>
+                    </div>
+                    <br>
+                    <label class="text-secondary">Nombre de points misés</label>
+                    <input class="form-control" type="number" name="points" placeholder="0">
+            </div>
+            <div class="form-group col-md-3">
+                    <label class="text-secondary">Trimestre</label>
+                    <div class="custom-control custom-radio">
+                        <input type="radio" id="trimestre1" name="trimestre" class="custom-control-input" value="T1">
+                        <label class="custom-control-label" for="trimestre1" >T1</label>
+                    </div>
+                    <div class="custom-control custom-radio">
+                        <input type="radio" id="trimestre2" name="trimestre" class="custom-control-input" value="T2">
+                        <label class="custom-control-label" for="trimestre2">T2</label>
+                    </div>
+                    <div class="custom-control custom-radio">
+                        <input type="radio" id="trimestre3" name="trimestre" class="custom-control-input" value="T3">
+                        <label class="custom-control-label" for="trimestre3">T3</label>
+                    </div>
+                    <br>
+                    <label class="text-secondary">Année</label>
+                    <select class="custom-select" name="annee">
+                            <option value="2028 / 2029">2028 / 2029</option>
+                            <option value="2027 / 2028">2027 / 2028</option>
+                            <option value="2026 / 2027">2026 / 2027</option>
+                            <option value="2025 / 2026">2025 / 2026</option>
+                            <option value="2024 / 2025">2024 / 2025</option>
+                            <option value="2023 / 2024">2023 / 2024</option>
+                            <option value="2022 / 2023">2022 / 2023</option>
+                            <option value="2021 / 2022">2021 / 2022</option>
+                            <option value="2020 / 2021">2020 / 2021</option>
+                            <option selected value="2019 / 2020">2019 / 2020</option>
+                            <option value="2018 / 2019">2018 / 2019</option>
+                            <option value="2017 / 2018">2017 / 2018</option>
+                            <option value="2016 / 2017">2016 / 2017</option>
+                            <option value="2015 / 2016">2015 / 2016</option>
+                    </select>
+            </div>
+    </div>
+    <hr>
+    <div class="form-row">
+        <div class="form-group col-md-4">
+        <label class="text-secondary">Note du cours /10</label>
+        <select class="custom-select" name="noteCours">
+                <option value="0">0</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+            </select>
+        </div>
+        <div class="form-group col-md-8">
+                <label class="text-secondary" for="commentCours">Commentaire du cours</label>
+                <textarea class="form-control" id="commentCours" name="commentCours" rows="3"></textarea>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-4">
+        <label class="text-secondary">Note du Professeur /10</label>
+        <select class="custom-select" name="noteCours">
+                <option value="0">0</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+            </select>
+        </div>
+        <div class="form-group col-md-8">
+                <label class="text-secondary" for="commentProf">Commentaire du professeur</label>
+                <textarea class="form-control" id="commentProf" name="commentProf" rows="3"></textarea>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-secondary">Envoyer</button>
+    <a class="btn btn-secondary" href="/cours/<%= course.CodeCours %>/avis">Retour</a>
+  </form>
