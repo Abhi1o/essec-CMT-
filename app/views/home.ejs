@@ -4,529 +4,783 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Court-Mais-Trash (CMT) - ESSEC</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <style>
-    :root {
-            --primary-color: #3A86FF;
-            --secondary-color: #8338EC;
-            --accent-color: #FF006E;
-            --background-color: #F8F9FA;
-            --text-color: #212529;
-            --card-background: #FFFFFF;
-            --shadow-color: rgba(0, 0, 0, 0.1);
-            --input-border: #CED4DA;
-            --button-color: #3A86FF;
-            --tab-inactive: #E9ECEF;
-            --success-color: #38B000;
+        :root {
+            --essec-blue: #1d9edd;
+            --essec-blue-light: #5fb7e5;
+            --essec-blue-dark: #1678b3;
+            --text-color: #333;
+            --light-gray: #f8f9fa;
         }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
-            font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            font-family: 'Open Sans', sans-serif;
             color: var(--text-color);
-            line-height: 1.6;
         }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
+        .navbar {
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,.1);
         }
-
-        header {
-            background: linear-gradient(120deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            padding: 20px 0;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 4px 6px var(--shadow-color);
+        .navbar-brand img {
+            height: 40px;
         }
-
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-size: 24px;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        nav ul {
-            display: flex;
-            gap: 20px;
-            list-style-type: none;
-        }
-
-        nav a {
-            color: white;
-            text-decoration: none;
-            font-size: 16px;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-
-        nav a:hover {
-            color: var(--accent-color);
-        }
-
-        .hero {
-            background: linear-gradient(rgba(58, 134, 255, 0.8), rgba(131, 56, 236, 0.8)), url('https://source.unsplash.com/random/1600x900/?university') no-repeat center center/cover;
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            color: white;
-            padding: 0 20px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 1;
-        }
-
-        .hero h1 {
-            font-size: 48px;
-            margin-bottom: 20px;
-            font-weight: 700;
-        }
-
-        .hero p {
-            font-size: 20px;
-            max-width: 600px;
-            margin: 0 auto 30px;
-        }
-
-        .btn {
-            background: linear-gradient(120deg, var(--accent-color), var(--secondary-color));
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            font-size: 18px;
-            cursor: pointer;
-            border-radius: 30px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(120deg, transparent, rgba(255,255,255,0.3), transparent);
-            transition: all 0.4s ease;
-        }
-
-        .btn:hover::before {
-            left: 100%;
-        }
-
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .search-container {
-            display: flex;
-            justify-content: center;
-            margin: 50px 0;
-        }
-
-        .search-input {
-            width: 60%;
-            padding: 15px 20px;
-            font-size: 16px;
-            border-radius: 30px;
-            border: none;
-            box-shadow: 0 4px 6px var(--shadow-color);
-            transition: all 0.3s ease;
-        }
-
-        .search-input:focus {
-            outline: none;
-            box-shadow: 0 6px 8px var(--shadow-color);
-            width: 65%;
-        }
-
-        .tabs {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .tab-btn {
-            background: linear-gradient(120deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            font-size: 18px;
-            cursor: pointer;
-            border-radius: 30px;
-            transition: all 0.3s ease;
+        .nav-link,.btn-essec {
+            color: var(--text-color) !important;
             font-weight: 600;
         }
-
-        .tab-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 6px var(--shadow-color);
+        .nav-link:hover,.btn-essec:hover {
+            color: var(--essec-blue) !important;
         }
-
-        .tab-btn.active {
-            background: linear-gradient(120deg, var(--accent-color), var(--secondary-color));
+        .hero-section {
+            background-color: var(--essec-blue);
+            color: white;
+            padding: 4rem 0;
         }
-
-        .card-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 30px;
-            margin-bottom: 50px;
+        .hero-section h1 {
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        .btn-essec {
+            background-color: white;
+            color: var(--essec-blue);
+            border: none;
+            font-weight: 600;
+            padding: 0.5rem 1.5rem;
+            transition: all 0.3s ease;
+        }
+        .btn-essec:hover {
+            background-color: var(--light-gray);
+            color: var(--essec-blue);
+        }
+        .section-title {
+            color: var(--essec-blue);
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+        .table-container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,.1);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .table-essec {
+            color: var(--text-color);
+        }
+        .table-essec thead {
+            background-color: var(--essec-blue);
+            color: white;
+        }
+        .footer {
+            background-color: var(--light-gray);
+            color: var(--text-color);
+            padding: 2rem 0;
+            margin-top: 3rem;
         }
 
         .card {
-            background-color: var(--card-background);
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 10px 20px var(--shadow-color);
+            border: none;
             transition: all 0.3s ease;
+            margin-bottom: 20px;
         }
-
         .card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 15px 30px var(--shadow-color);
+            box-shadow: 0 4px 8px rgba(0,0,0,.15);
         }
-
-        .card-title {
-            font-size: 20px;
+        .card-nav {
+            background-color: #62b2da;
+            color: var(--text-color);
             font-weight: 600;
-            margin-bottom: 15px;
-            color: var(--primary-color);
+            font-size: small;
+            padding:0 1rem ;
         }
-
-        .card-info {
-            font-size: 16px;
-            color: #6c757d;
-            margin-bottom: 10px;
-        }
-
-        .chart-container {
-            background-color: var(--card-background);
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 10px 20px var(--shadow-color);
-            margin-bottom: 50px;
-        }
-
-        .chart-title {
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 20px;
-            color: var(--primary-color);
-            text-align: center;
-        }
-
-        .about-cmt {
-            background-color: var(--card-background);
-            border-radius: 15px;
-            padding: 40px;
-            box-shadow: 0 10px 20px var(--shadow-color);
-            margin-bottom: 50px;
-        }
-
-        .about-cmt h2 {
-            font-size: 28px;
-            font-weight: 700;
-            margin-bottom: 20px;
-            color: var(--primary-color);
-        }
-
-        .about-cmt p {
-            font-size: 16px;
-            margin-bottom: 15px;
-            color: #495057;
-        }
-
-        footer {
-            background: linear-gradient(120deg, var(--primary-color), var(--secondary-color));
+        .badge-essec {
+            background-color: var(--essec-blue-light);
             color: white;
-            text-align: center;
-            padding: 30px 0;
-            margin-top: 50px;
         }
-
-        #scrollToTopBtn {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            font-size: 24px;
-            background-color: var(--primary-color);
+        .list-group-item-action:hover {
+            background-color: var(--essec-blue-light);
             color: white;
-            border: none;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            cursor: pointer;
-            display: none;
-            transition: all 0.3s ease;
         }
-
-        #scrollToTopBtn:hover {
-            background-color: var(--secondary-color);
-        }
-
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 36px;
-            }
-
-            .hero p {
-                font-size: 18px;
-            }
-
-            .search-input {
-                width: 80%;
-            }
-
-            .card-container {
-                grid-template-columns: 1fr;
-            }
+        .search-form .form-control:focus {
+            border-color: var(--essec-blue);
+            box-shadow: 0 0 0 0.2rem rgba(29, 158, 237, 0.25);
         }
     </style>
-
 </head>
 <body>
-    <header>
-        <div class="container header-content">
-            <div class="logo">
-                <i class="fas fa-graduation-cap"></i>
-                CMT
-            </div>
-            <nav>
-                <ul>
-                    <li><a href="#"><i class="fas fa-search"></i> Rechercher</a></li>
-                    <li><a href="/cours"><i class="fas fa-book"></i> Cours</a></li>
-                    <li><a href="/profs"><i class="fas fa-user"></i> Profs</a></li>
-                    <li><a href="/signout"><i class="fas fa-sign-out-alt"></i> Déconnexion</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
+   
+    <% include header.ejs%>
 
-    <div class="language-selector">
-        <select id="language-select" onchange="changeLanguage()">
-            <option value="fr">Français</option>
-            <option value="en">English</option>
-        </select>
+    <div class="hero-section">
+        <div class="container">
+            <h1 class="display-4">Bienvenue sur Court-Mais-Trash!</h1>
+            <p class="lead">Votre plateforme d'évaluation des cours ESSEC</p>
+            <a class="btn btn-essec btn-lg mt-3" href="#about">En savoir plus</a>
+            <!-- <a class="btn btn-essec btn-lg mt-3" href="#dashboard">Voir le tableau de bord</a> -->
+        </div>
     </div>
 
-    <main class="container">
-        <section class="hero">
-            <h1>Bienvenue sur Court-Mais-Trash!</h1>
-            <p>Découvrez les meilleurs cours et professeurs de l'ESSEC, évalués par vos pairs</p>
-            <button class="btn" onclick="location.href='/cours'">Commencer l'exploration</button>
-        </section>
-
-        <div class="search-container">
-            <input type="text" class="search-input" placeholder="Rechercher un cours ou un professeur..." id="searchInput">
+    <div class="container mt-5" id="about">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="section-title">À propos de CMT</h2>
+                <p>Le Court-Mais-Trash (CMT) est une plateforme qui regroupe l'ensemble des avis des étudiants de la Grande Ecole de l'ESSEC sur les différents cours dispensés. Avec plus de 200 cours disponibles, le CMT vous aide à faire le meilleur choix pour votre parcours académique.</p>
+                <p>Points clés :</p>
+                <ul>
+                    <li>Avis authentiques des étudiants ESSEC</li>
+                    <li>Évaluations anonymes pour une totale liberté d'expression</li>
+                    <li>Mis à jour régulièrement par le BDE ESSEC</li>
+                </ul>
+                <p><strong>Disclaimer :</strong> Il s'agit d'une version bêta développée par le BDE Havana. Nous travaillons constamment à l'amélioration du site pour une meilleure expérience utilisateur.</p>
+            </div>
         </div>
+    </div>
 
-        <section class="tabs">
-            <button class="tab-btn active" data-tab="courses">Les cours les mieux notés</button>
-            <button class="tab-btn" data-tab="professors">Les profs les mieux notés</button>
-        </section>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="table-container">
+                    <h3 class="section-title">Les cours les mieux notés</h3>
+                    <table class="table table-essec table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Cours</th>
+                                <th scope="col">Note</th>
+                                <th scope="col">Avis</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bestCourses">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="table-container">
+                    <h3 class="section-title">Les cours les moins bien notés</h3>
+                    <table class="table table-essec table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Cours</th>
+                                <th scope="col">Note</th>
+                                <th scope="col">Avis</th>
+                            </tr>
+                        </thead>
+                        <tbody id="worstCourses">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col-lg-6">
+                <div class="table-container">
+                    <h3 class="section-title">Les profs les mieux notés</h3>
+                    <table class="table table-essec table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Professeur</th>
+                                <th scope="col">Note</th>
+                                <th scope="col">Avis</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bestProfs">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="table-container">
+                    <h3 class="section-title">Les profs les moins bien notés</h3>
+                    <table class="table table-essec table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Professeur</th>
+                                <th scope="col">Note</th>
+                                <th scope="col">Avis</th>
+                            </tr>
+                        </thead>
+                        <tbody id="worstProfs">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        <section class="card-container" id="cardContainer"></section>
-
-        <section class="chart-container">
-            <h2 class="chart-title">Analyse des départements</h2>
-            <canvas id="myChart"></canvas>
-        </section>
-
-        <section class="about-cmt">
-            <h2>À propos de Court-Mais-Trash</h2>
-            <p>Le Court-Mais-Trash (ou CMT pour les intimes) est une plateforme qui regroupe l'ensemble des avis des étudiants de la Grande École de l'ESSEC sur les différents cours dispensés.</p>
-            <p>Il est parfois difficile de faire son choix dans un catalogue de plus de 200 cours. C'est pourquoi le BDE ESSEC s'active chaque année pour récupérer un maximum d'avis, pour que tu puisses faire ton choix plus aisément.</p>
-            <p>Il faut savoir que le CMT n'est pas officiel. Les avis qui sont récoltés ici ne proviennent pas de l'administration. Donc pas de langue de bois, tu t'exprimes comme tu le souhaites (toujours dans le respect d'autrui).</p>
-            <p>De plus, nous t'invitons bien évidemment à mettre tes avis. Venir récupérer des infos c'est bien, mais en donner soit même c'est pas mal aussi. Pas de panique, tout est anonyme !</p>
-        </section>
-    </main>
-
-    <footer>
+    <!-- <footer class="footer">
         <div class="container">
-            <p>© 2024 Court-Mais-Trash. Tous droits réservés.</p>
-            <p>Développé avec passion par BDE Havana</p>
+            <p class="text-center">&copy; 2024 Court-Mais-Trash. Tous droits réservés. | Fait avec ❤️ par BDE Havana</p>
+        </div>
+    </footer> -->
+    <div class="container mt-5" id="dashboard">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card mb-4">
+                    <div class="card-nav">
+                        <h3>Tableau de bord</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-3 text-center">
+                                <h4 id="totalCourses">247</h4>
+                                <p>Cours évalués</p>
+                            </div>
+                            <div class="col-md-3 text-center">
+                                <h4 id="totalProfessors">132</h4>
+                                <p>Professeurs notés</p>
+                            </div>
+                            <div class="col-md-3 text-center">
+                                <h4 id="userReviews">15</h4>
+                                <p>Vos avis</p>
+                            </div>
+                            <div class="col-md-3 text-center">
+                                <h4 id="avgRating">4.2</h4>
+                                <p>Note moyenne</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card mb-4">
+                    <div class="card-nav">
+                        <h3>Activité récente</h3>
+                    </div>
+                    <ul class="list-group list-group-flush" id="recentActivity">
+                        <li class="list-group-item">Nouvel avis sur MGTM31280 - Strategic Management</li>
+                        <li class="list-group-item">FING31161 - Financial Markets ajouté aux cours</li>
+                        <li class="list-group-item">Prof. Durand a reçu 5 nouveaux avis</li>
+                        <li class="list-group-item">Mise à jour du syllabus pour MKGF31128 - Brand Management</li>
+                    </ul>
+                </div>
+
+                <div class="card mb-4">
+                    <div class="card-nav">
+                        <h3>Cours en vedette</h3>
+                    </div>
+                    <div class="card-body" id="featuredCourses">
+                        <div class="mb-2">
+                            <strong>MKTG31125</strong> - Digital Marketing
+                            <span class="badge bg-success float-end">4.8 ⭐</span>
+                            <a href="/course/MKTG31125" class="btn btn-sm btn-outline-primary float-end me-2">Voir détails</a>
+                        </div>
+                        <div class="mb-2">
+                            <strong>FINE31164</strong> - Corporate Finance
+                            <span class="badge bg-success float-end">4.7 ⭐</span>
+                            <a href="/course/FINE31164" class="btn btn-sm btn-outline-primary float-end me-2">Voir détails</a>
+                        </div>
+                        <div class="mb-2">
+                            <strong>MGTP31412</strong> - Leadership and Organization
+                            <span class="badge bg-success float-end">4.6 ⭐</span>
+                            <a href="/course/MGTP31412" class="btn btn-sm btn-outline-primary float-end me-2">Voir détails</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mb-4">
+                    <div class="card-nav">
+                        <h3>Recommandations personnalisées</h3>
+                    </div>
+                    <div class="card-body">
+                        <p>Basé sur vos avis précédents, vous pourriez aimer :</p>
+                        <ul>
+                            <li>ECOA31142 - Behavioral Economics</li>
+                            <li>MGTM31235 - Innovation Management</li>
+                            <li>FINE31170 - Fintech and Blockchain</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card mb-4">
+                    <div class="card-nav">
+                        <h3>Aperçu des départements</h3>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="departmentRatingsChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Existing tables for best/worst courses and professors -->
+                <!-- ... -->
+            </div>
+
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <div class="card-nav">
+                        <h3>Profil utilisateur</h3>
+                    </div>
+                    <div class="card-body text-center">
+                        <img src="/images/default-avatar.png" alt="Profile Picture" class="rounded-circle mb-3" style="width: 100px;">
+                        <h4 id="userName">Jeanne Dupont</h4>
+                        <p><span class="badge badge-essec" id="userLevel">Expert Reviewer</span></p>
+                        <p>15 avis soumis | 30 points gagnés</p>
+                        <a href="/profile" class="btn btn-outline-primary">Éditer le profil</a>
+                        <a href="/my-reviews" class="btn btn-outline-secondary">Mes avis</a>
+                    </div>
+                </div>
+
+                <div class="card mb-4">
+                    <div class="card-nav">
+                        <h3>Dates importantes</h3>
+                    </div>
+                    <ul class="list-group list-group-flush" id="upcomingDeadlines">
+                        <li class="list-group-item">15 Mai: Date limite d'inscription T3</li>
+                        <li class="list-group-item">1 Juin: Ouverture des évaluations T2</li>
+                        <li class="list-group-item">30 Juin: Fermeture des évaluations T2</li>
+                    </ul>
+                </div>
+
+                <div class="card mb-4">
+                    <div class="card-nav">
+                        <h3>Avis de la semaine</h3>
+                    </div>
+                    <div class="card-body">
+                        <blockquote class="blockquote mb-0">
+                            <p>"Le cours de MGTP31412 m'a vraiment ouvert les yeux sur l'importance du leadership dans les organisations modernes. Le professeur utilise des études de cas fascinantes et des exercices pratiques qui rendent le contenu très engageant."</p>
+                            <footer class="blockquote-footer">Étudiant anonyme sur <cite title="MGTP31412">Leadership and Organization</footer>
+                        </blockquote>
+                    </div>
+                </div>
+
+                <div class="card mb-4">
+                    <div class="card-nav">
+                        <h3>Conseil de la semaine</h3>
+                    </div>
+                    <div class="card-body">
+                        <p id="weeklyTip">Assurez-vous de donner des commentaires constructifs dans vos avis.</p>
+                    </div>
+                </div>
+
+                <div class="card mb-4">
+                    <div class="card-nav">
+                        <h3>Annonces CMT</h3>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>Nouvelle fonctionnalité :</strong> Vous pouvez maintenant filtrer les avis par année d'étude !</p>
+                        <p><strong>Rappel :</strong> N'oubliez pas de mettre à jour vos avis pour le trimestre passé.</p>
+                    </div>
+                </div>
+
+                <div class="card mb-4">
+                    <div class="card-nav">
+                        <h3>Votre avis compte</h3>
+                    </div>
+                    <div class="card-body">
+                        <p>Comment pouvons-nous améliorer CMT ?</p>
+                        <textarea class="form-control mb-2" rows="3" placeholder="Vos suggestions..."></textarea>
+                        <button class="btn btn-primary">Envoyer</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mt-4">
+        <div class="card">
+            <div class="card-nav">
+                <h3>Recherche avancée</h3>
+            </div>
+            <div class="card-body">
+                <form class="search-form">
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <input type="text" class="form-control" placeholder="Nom du cours ou code">
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <select class="form-select">
+                                <option selected>Département</option>
+                                <option>Management</option>
+                                <option>Finance</option>
+                                <option>Marketing</option>
+                                <option>Economics</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <select class="form-select">
+                                <option selected>Niveau du cours</option>
+                                <option>Introductif</option>
+                                <option>Intermédiaire</option>
+                                <option>Avancé</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2 mb-3">
+                            <button type="submit" class="btn btn-primary w-100">Rechercher</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer mt-5 py-3 bg-light">
+        <div class="container">
+            <p class="text-center mb-0">&copy; 2024 Court-Mais-Trash. Tous droits réservés. | Fait avec ❤️ par BDE Havana</p>
         </div>
     </footer>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        var socket = io();
+
+       // Change tip every 10 seconds
+
+        // Existing socket calls
+    socket.emit('requestBestCourses');
+    socket.emit('requestWorstCourses');
+    socket.emit('requestBestProfs');
+    socket.emit('requestWorstProfs');
+
+    // New socket calls for dashboard data
+    socket.emit('requestDashboardStats');
+    socket.emit('requestRecentActivity');
+    socket.emit('requestFeaturedCourses');
+    socket.emit('requestUpcomingDeadlines');
+    socket.emit('requestUserProfile');
+
+    // Chart for department ratings
+    function createDepartmentRatingsChart() {
+        const ctx = document.getElementById('departmentRatingsChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Management', 'Finance', 'Marketing', 'Economics', 'Operations'],
+                datasets: [{
+                    label: 'Note moyenne par département',
+                    data: [4.2, 4.5, 4.3, 4.1, 4.4],
+                    backgroundColor: [
+                        'rgba(29, 158, 237, 0.7)',
+                        'rgba(95, 183, 229, 0.7)',
+                        'rgba(22, 120, 179, 0.7)',
+                        'rgba(52, 152, 219, 0.7)',
+                        'rgba(41, 128, 185, 0.7)'
+                    ],
+                    borderColor: 'rgba(29, 158, 237, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 5
+                    }
+                }
+            }
+        });
+    }
+
+    // Call the function to create the chart
+    createDepartmentRatingsChart();
+
+    // Rotating tips
+    const tips = [
+        "Assurez-vous de donner des commentaires constructifs dans vos avis.",
+        "Pensez à évaluer à la fois le contenu du cours et la pédagogie du professeur.",
+        "Vos avis aident les autres étudiants à faire des choix éclairés pour leurs cours.",
+        "N'oubliez pas de mettre à jour vos avis si votre opinion change au fil du temps.",
+        "Soyez spécifique dans vos commentaires pour aider les futurs étudiants.",
+        "Évaluez les cours peu de temps après les avoir terminés pour des avis précis."
+    ];
+    let currentTipIndex = 0;
+    function rotateTip() {
+        const tipElement = document.getElementById('weeklyTip');
+        tipElement.style.opacity = 0;
+        setTimeout(() => {
+            tipElement.textContent = tips[currentTipIndex];
+            tipElement.style.opacity = 1;
+            currentTipIndex = (currentTipIndex + 1) % tips.length;
+        }, 500);
+    }
+    setInterval(rotateTip, 10000); // Change tip every 10 seconds
+
+    // ... (keep all other functions as they are) ...
+
+    // Existing table population functions
+    function populateTable(tableId, data, isProf = false) {
+        var tableBody = document.getElementById(tableId);
+        tableBody.innerHTML = '';
+        for(var i = 0; i < data.length; i++){
+            var row = tableBody.insertRow();
+            row.insertCell(0).textContent = i + 1;
+            var nameCell = row.insertCell(1);
+            if (isProf) {
+                nameCell.innerHTML = `<a href='prof/${data[i]["_id"]}/avis'>${data[i]["_id"]}</a>`;
+            } else {
+                nameCell.innerHTML = `<a href='cours/${data[i]["_id"]["CodeCours"]}/avis'>${data[i]["_id"]["CodeCours"]} - ${data[i]["_id"]["NomCours"]}</a>`;
+            }
+            row.insertCell(2).textContent = (Math.trunc(data[i][isProf ? "moyenneProf" : "moyenneCours"] * 10) / 10).toFixed(1);
+            row.insertCell(3).textContent = data[i]["nbAvis"];
+        }
+    }
+
+    // Socket event listeners
+    socket.on('responseBestCourses', function(bestCourses){
+        populateTable('bestCourses', bestCourses);
+    });
+
+    socket.on('responseWorstCourses', function(worstCourses){
+        populateTable('worstCourses', worstCourses);
+    });
+
+    socket.on('responseBestProfs', function(bestProfs){
+        populateTable('bestProfs', bestProfs, true);
+    });
+
+    socket.on('responseWorstProfs', function(worstProfs){
+        populateTable('worstProfs', worstProfs, true);
+    });
+
+
+        // Simulating real-time updates
+        function simulateRealTimeUpdates() {
+            const activities = [
+                "Nouvel avis ajouté pour FINM31161 - Advanced Corporate Finance",
+                "Le prof. Martin vient de recevoir sa 100ème évaluation !",
+                "Cours MKTG31128 - Digital Marketing Strategy mis à jour",
+                "Nouvelle note moyenne pour ECOM31142 : 4.7/5",
+                "10 nouveaux étudiants ont rejoint CMT aujourd'hui"
+            ];
+
+            setInterval(() => {
+                const activityList = document.getElementById('recentActivity');
+                const newActivity = document.createElement('li');
+                newActivity.className = 'list-group-item';
+                newActivity.textContent = activities[Math.floor(Math.random() * activities.length)];
+                newActivity.style.opacity = 0;
+                
+                if (activityList.children.length >= 5) {
+                    activityList.removeChild(activityList.lastChild);
+                }
+                
+                activityList.insertBefore(newActivity, activityList.firstChild);
+                setTimeout(() => {
+                    newActivity.style.transition = 'opacity 0.5s';
+                    newActivity.style.opacity = 1;
+                }, 10);
+            }, 15000); // Add new activity every 15 seconds
+        }
+
+        simulateRealTimeUpdates();
+
+        // Enhanced search functionality
+        document.querySelector('.search-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const searchTerm = this.querySelector('input[type="text"]').value;
+            const department = this.querySelector('select:nth-of-type(1)').value;
+            const level = this.querySelector('select:nth-of-type(2)').value;
+            
+            // Here you would typically make an AJAX call to your backend
+            console.log(`Searching for: ${searchTerm}, Department: ${department}, Level: ${level}`);
+            alert('Recherche simulée effectuée. Consultez la console pour les détails.');
+        });
+
+        // User engagement - gamification
+        let userPoints = 30; // Example starting points
+        function updateUserPoints(points) {
+            userPoints += points;
+            document.querySelector('#userName').nextElementSibling.nextElementSibling.textContent = 
+                `${userPoints} points gagnés`;
+            
+            // Update user level based on points
+            const userLevelElement = document.getElementById('userLevel');
+            if (userPoints > 50) {
+                userLevelElement.textContent = "Expert Reviewer";
+                userLevelElement.className = "badge bg-warning text-dark";
+            } else if (userPoints > 20) {
+                userLevelElement.textContent = "Advanced Reviewer";
+                userLevelElement.className = "badge bg-info text-dark";
+            } else {
+                userLevelElement.textContent = "Novice Reviewer";
+                userLevelElement.className = "badge bg-secondary";
+            }
+        }
+
+        // Simulate point gain on page interactions
+        document.querySelectorAll('.btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                updateUserPoints(1); // Gain a point for each interaction
+            });
+        });
+
+        // Feedback submission
+        document.querySelector('.card-body button.btn-primary').addEventListener('click', function() {
+            const feedback = this.previousElementSibling.value;
+            if (feedback.trim() !== '') {
+                alert('Merci pour votre feedback !');
+                this.previousElementSibling.value = '';
+                updateUserPoints(5); // Reward points for feedback
+            } else {
+                alert('Veuillez entrer votre feedback avant de soumettre.');
+            }
+        });
+
+        // Initialize tooltips
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        });
+
+    
+
+        socket.on('responseDashboardStats', function(stats) {
+            document.getElementById('totalCourses').textContent = stats.totalCourses;
+            document.getElementById('totalProfessors').textContent = stats.totalProfessors;
+            document.getElementById('userReviews').textContent = stats.userReviews;
+            document.getElementById('avgRating').textContent = stats.avgRating.toFixed(1);
+        });
+
+        socket.on('responseRecentActivity', function(activities) {
+            const activityList = document.getElementById('recentActivity');
+            activityList.innerHTML = '';
+            activities.forEach(activity => {
+                const li = document.createElement('li');
+                li.className = 'list-group-item';
+                li.textContent = activity;
+                activityList.appendChild(li);
+            });
+        });
+
+        socket.on('responseFeaturedCourses', function(courses) {
+            const featuredCoursesDiv = document.getElementById('featuredCourses');
+            featuredCoursesDiv.innerHTML = '';
+            courses.forEach(course => {
+                featuredCoursesDiv.innerHTML += `
+                    <div class="mb-2">
+                        <strong>${course.code}</strong> - ${course.name}
+                        <a href="/course/${course.code}" class="btn btn-sm btn-outline-primary float-end">Voir détails</a>
+                    </div>
+                `;
+            });
+        });
+
+        socket.on('responseUpcomingDeadlines', function(deadlines) {
+            const deadlinesList = document.getElementById('upcomingDeadlines');
+            deadlinesList.innerHTML = '';
+            deadlines.forEach(deadline => {
+                const li = document.createElement('li');
+                li.className = 'list-group-item';
+                li.textContent = `${deadline.date}: ${deadline.description}`;
+                deadlinesList.appendChild(li);
+            });
+        });
+
+        socket.on('responseUserProfile', function(profile) {
+            document.getElementById('userName').textContent = profile.name;
+            document.getElementById('userLevel').textContent = profile.level;
+            // Update profile picture if available
+        });
+
+        // Existing table population functions
+        // ... (keep your existing populateTable function) ...
+
+        // Chart for ratings trend
+        function createRatingsTrendChart(data) {
+            const ctx = document.getElementById('ratingsTrendChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: data.labels,
+                    datasets: [{
+                        label: 'Note moyenne',
+                        data: data.ratings,
+                        borderColor: '#1d9edd',
+                        tension: 0.1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 5
+                        }
+                    }
+                }
+            });
+        }
+
+        // Example data for the chart
+        const chartData = {
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+            ratings: [4.2, 4.3, 4.1, 4.4, 4.5]
+        };
+        createRatingsTrendChart(chartData);
+
+        // // Rotating tips
+        // const tips = [
+        //     "Assurez-vous de donner des commentaires constructifs dans vos avis.",
+        //     "Pensez à évaluer à la fois le contenu du cours et la pédagogie du professeur.",
+        //     "Vos avis aident les autres étudiants à faire des choix éclairés pour leurs cours.",
+        //     "N'oubliez pas de mettre à jour vos avis si votre opinion change au fil du temps."
+        // ];
+        // let currentTipIndex = 0;
+        // function rotateTip() {
+        //     document.getElementById('weeklyTip').textContent = tips[currentTipIndex];
+        //     currentTipIndex = (currentTipIndex + 1) % tips.length;
+        // }
+        // setInterval(rotateTip, 10000); // Change tip every 10 seconds
+
+
+
+    </script>
+
+
+
+
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script>
-        const socket = io.connect('http://vps-d12f2153.vps.ovh.net:80');
-        let activeTab = 'courses';
-        const cardContainer = document.getElementById('cardContainer');
-        const searchInput = document.getElementById('searchInput');
-        const tabButtons = document.querySelectorAll('.tab-btn');
-
-        let bestCourses = [];
-        let worstCourses = [];
-        let bestProfs = [];
-        let worstProfs = [];
-
-        function renderCards(data) {
-            cardContainer.innerHTML = '';
-            data.forEach((item, index) => {
-                const card = document.createElement('div');
-                card.className = 'card';
-                card.innerHTML = `
-                    <h3 class="card-title">${item._id.CodeCours ? `${item._id.CodeCours} - ${item._id.NomCours}` : item._id}</h3>
-                    <p class="card-info"><i class="fas fa-star"></i> Note: ${(item.moyenneCours || item.moyenneProf).toFixed(1)}</p>
-                    <p class="card-info"><i class="fas fa-comments"></i> Avis: ${item.nbAvis}</p>
-                `;
-                cardContainer.appendChild(card);
-            });
-        }
-
-        function filterData(data, searchTerm) {
-            return data.filter(item => 
-                (item._id.NomCours && item._id.NomCours.toLowerCase().includes(searchTerm.toLowerCase())) ||
-                (item._id.CodeCours && item._id.CodeCours.toLowerCase().includes(searchTerm.toLowerCase())) ||
-                (typeof item._id === 'string' && item._id.toLowerCase().includes(searchTerm.toLowerCase()))
-            );
-        }
-
-        searchInput.addEventListener('input', () => {
-            const searchTerm = searchInput.value;
-            const filteredData = filterData(activeTab === 'courses' ? bestCourses : bestProfs, searchTerm);
-            renderCards(filteredData);
-        });
-
-        tabButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                activeTab = button.dataset.tab;
-                tabButtons.forEach(btn => btn.classList.remove('active'));
-                button.classList.add('active');
-                renderCards(activeTab === 'courses' ? bestCourses : bestProfs);
-            });
-        });
+        var socket = io();
 
         socket.emit('requestBestCourses');
         socket.emit('requestWorstCourses');
         socket.emit('requestBestProfs');
         socket.emit('requestWorstProfs');
 
-        socket.on('responseBestCourses', function(data) {
-            bestCourses = data;
-            renderCards(bestCourses);
+        socket.on('responseBestCourses', function(bestCourses){
+            populateTable('bestCourses', bestCourses);
         });
 
-        socket.on('responseWorstCourses', function(data) {
-            worstCourses = data;
+        socket.on('responseWorstCourses', function(worstCourses){
+            populateTable('worstCourses', worstCourses);
         });
 
-        socket.on('responseBestProfs', function(data) {
-            bestProfs = data;
+        socket.on('responseBestProfs', function(bestProfs){
+            populateTable('bestProfs', bestProfs, true);
         });
 
-        socket.on('responseWorstProfs', function(data) {
-            worstProfs = data;
+        socket.on('responseWorstProfs', function(worstProfs){
+            populateTable('worstProfs', worstProfs, true);
         });
 
-        // Initialize chart
-        const ctx = document.getElementById('myChart').getContext('2d');
-        new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['Marketing', 'Finance', 'Management', 'Economics', 'IT'],
-                datasets: [
-                    {
-                        label: 'Note moyenne',
-                        data: [8.8, 8.6, 8.5, 8.7, 8.9],
-                        backgroundColor: 'rgba(66, 133, 244, 0.7)',
-                        borderColor: 'rgba(66, 133, 244, 1)',
-                        borderWidth: 1
-                    },
-                    {
-                        label: 'Nombre de cours',
-                        data: [25, 20, 18, 15, 12],
-                        backgroundColor: 'rgba(234, 67, 53, 0.7)',
-                        borderColor: 'rgba(234, 67, 53, 1)',
-                        borderWidth: 1
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                },
-                plugins: {
-                    legend: {
-                        position: 'top',
-                    },
-                    title: {
-                        display: true,
-                        text: 'Analyse des départements'
-                    }
+        function populateTable(tableId, data, isProf = false) {
+            var tableBody = document.getElementById(tableId);
+            tableBody.innerHTML = '';
+            for(var i = 0; i < data.length; i++){
+                var row = tableBody.insertRow();
+                row.insertCell(0).textContent = i + 1;
+                var nameCell = row.insertCell(1);
+                if (isProf) {
+                    nameCell.innerHTML = `<a href='prof/${data[i]["_id"]}/avis'>${data[i]["_id"]}</a>`;
+                } else {
+                    nameCell.innerHTML = `<a href='cours/${data[i]["_id"]["CodeCours"]}/avis'>${data[i]["_id"]["CodeCours"]} - ${data[i]["_id"]["NomCours"]}</a>`;
                 }
-            }
-        });
-
-        // Language switching functionality
-        function changeLanguage() {
-            const lang = document.getElementById('language-select').value;
-            if (lang === 'en') {
-                // Change text to English
-                document.querySelector('.hero h1').textContent = 'Welcome to Court-Mais-Trash!';
-                document.querySelector('.hero p').textContent = 'Discover the best courses and professors at ESSEC, rated by your peers';
-                document.querySelector('.hero .btn').textContent = 'Start Exploring';
-                document.querySelector('.search-input').placeholder = 'Search for a course or professor...';
-                document.querySelectorAll('.tab-btn')[0].textContent = 'Top Rated Courses';
-                document.querySelectorAll('.tab-btn')[1].textContent = 'Top Rated Professors';
-                // ... add more translations as needed
-            } else {
-                // Change text back to French
-                document.querySelector('.hero h1').textContent = 'Bienvenue sur Court-Mais-Trash!';
-                document.querySelector('.hero p').textContent = 'Découvrez les meilleurs cours et professeurs de l\'ESSEC, évalués par vos pairs';
-                document.querySelector('.hero .btn').textContent = 'Commencer l\'exploration';
-                document.querySelector('.search-input').placeholder = 'Rechercher un cours ou un professeur...';
-                document.querySelectorAll('.tab-btn')[0].textContent = 'Les cours les mieux notés';
-                document.querySelectorAll('.tab-btn')[1].textContent = 'Les profs les mieux notés';
-                // ... add more translations as needed
+                row.insertCell(2).textContent = (Math.trunc(data[i][isProf ? "moyenneProf" : "moyenneCours"] * 10) / 10).toFixed(1);
+                row.insertCell(3).textContent = data[i]["nbAvis"];
             }
         }
     </script>

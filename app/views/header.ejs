@@ -1,33 +1,145 @@
-  <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
-      <div class="container">
-          <nav class="navbar navbar-dark bg-dark">
-              <a class="navbar-brand" href="#">
-                  <a class="nav-link" href="/home"><img src="/images/CMT-logo.png" class="img-fluid" alt="Responsive image" width="60"/></a>
-              </a>
-            </nav>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Court-Mais-Trash (CMT) - ESSEC</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --essec-blue: #1d9edd;
+        }
+        .CMT-header{
+          font-size: larger;
+          
+        }
+        .navbar {
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,.1);
+        }
+        .navbar-brand img {
+            height: 40px;
+        }
+        .nav-link {
+            color: #333 !important;
+            font-weight: 600;
+        }
+        .nav-link:hover, .nav-link:focus {
+            color: var(--essec-blue) !important;
+        }
+        .btn-outline-essec {
+            color: var(--essec-blue);
+            border-color: var(--essec-blue);
+        }
+        .btn-outline-essec:hover, .btn-outline-essec:focus {
+            background-color: var(--essec-blue);
+            color: white;
+        }
+        .form-control:focus {
+            border-color: var(--essec-blue);
+            box-shadow: 0 0 0 0.2rem rgba(29, 158, 237, 0.25);
+        }
+        @media (max-width: 991.98px) {
+            .navbar-nav {
+                padding-top: 1rem;
+            }
+            .form-inline {
+                margin-top: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar sticky-top navbar-expand-lg navbar-light">
+        <div class="container">
+            <a class="navbar-brand" href="/home">
+                <!-- <img src="/images/CMT-logo.png" alt="CMT Logo" width="60" class="img-fluid"> -->
+                <span class="text-3xl CMT-header font-bold text-essec-blue">CMT</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-        
-      
-        <div class="collapse navbar-collapse text-right" id="navbarSupportedContent">
-          <ul class="navbar-nav mr-auto">
-            <form method="GET" action="/search" class="form-inline">
-              <input class="form-control mr-sm-2" name="query" type="search" placeholder="Rechercher un cours" aria-label="Search">
-              <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Rechercher</button>
-            </form>
-            <li class="nav-item">
-              <a class="nav-link" href="/cours">Liste des Cours</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/profs">Liste des Profs</a>
-            </li>
-            <li role="separator" class="divider"></li>
-            <li class="nav-item">
-              <a class="nav-link" href="/signout">Deconnexion</a>
-          </li>
-          </ul>
-        </div>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/cours">
+                            <span class="lang" data-lang="course-list">Liste des Cours</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/profs">
+                            <span class="lang" data-lang="prof-list">Liste des Profs</span>
+                        </a>
+                    </li>
+                </ul>
+                <form class="d-flex me-2" method="GET" action="/search">
+                    <input class="form-control me-2" name="query" type="search" placeholder="Rechercher un cours" aria-label="Search">
+                    <button class="btn btn-outline-essec" type="submit">
+                        <span class="lang" data-lang="search">Rechercher</span>
+                    </button>
+                </form>
+                <div class="dropdown me-2">
+                    <button class="btn btn-outline-essec dropdown-toggle" type="button" id="languageDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-globe"></i> <span class="lang" data-lang="language">Langue</span>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="languageDropdown">
+                        <li><a class="dropdown-item" href="#" onclick="changeLanguage('fr')">Français</a></li>
+                        <li><a class="dropdown-item" href="#" onclick="changeLanguage('en')">English</a></li>
+                        <li><a class="dropdown-item" href="#" onclick="changeLanguage('zh')">中文</a></li>
+                    </ul>
+                </div>
+                <a class="btn btn-outline-essec" href="/signout">
+                    <span class="lang" data-lang="logout">Déconnexion</span>
+                </a>
+            </div>
         </div>
     </nav>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const languages = {
+            'fr': {
+                'language': 'Langue',
+                'logout': 'Déconnexion',
+                'course-list': 'Liste des Cours',
+                'prof-list': 'Liste des Profs',
+                'search': 'Rechercher'
+            },
+            'en': {
+                'language': 'Language',
+                'logout': 'Logout',
+                'course-list': 'Course List',
+                'prof-list': 'Professor List',
+                'search': 'Search'
+            },
+            'zh': {
+                'language': '语言',
+                'logout': '登出',
+                'course-list': '课程列表',
+                'prof-list': '教授列表',
+                'search': '搜索'
+            }
+        };
+
+        function changeLanguage(lang) {
+            localStorage.setItem('preferredLanguage', lang);
+            updateLanguage();
+        }
+
+        function updateLanguage() {
+            const lang = localStorage.getItem('preferredLanguage') || 'fr';
+            document.querySelectorAll('.lang').forEach(el => {
+                const key = el.getAttribute('data-lang');
+                if (languages[lang] && languages[lang][key]) {
+                    el.textContent = languages[lang][key];
+                }
+            });
+            document.querySelector('input[name="query"]').placeholder = languages[lang]['search'];
+        }
+
+        document.addEventListener('DOMContentLoaded', updateLanguage);
+    </script>
+</body>
+</html>

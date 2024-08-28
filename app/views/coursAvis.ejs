@@ -1,126 +1,350 @@
 
 <% layout('layout') -%>
 
-<h1><strong><span id="coursID"><%= avis[0].CodeCours %></span></strong> - <span class="text-secondary"><%= avis[0].NomCours %></span></h1>
-<p><a href="http://www3.essec.fr/banner.nsf/urlCours/<%= avis[0].CodeCours%>" target="_blank">Voir le syllabus</a></p>
+<!-- <% if (typeof course === 'undefined') { %>
+    <p>Debug: Course is undefined</p>
+<% } else { %>
+    <p>Debug: Course is defined</p>
+<% } %> -->
 
-<div class="row">
-    <div class="col-md-3" align="center">
-        <h6>Note du cours</h6>
-        <button type="button" class="btn btn-outline-primary"><span id="moyenneCours" class="h1">**</span><span class="h6 text-secondary">/10</span></button>
-    </div>
-    <div class="col-md-3" align="center">
-        <h6>Pédagogie des profs</h6>
-        <button type="button" class="btn btn-outline-info"><span id="moyenneProfs" class="h1">**</span><span class="h6 text-secondary">/10</span></button>
-    </div>
-    <div class="col-md-3" align="center">
-        <h6>Moyenne points mises</h6>
-        <button type="button" class="btn btn-outline-info"><span id="moyennePointsMises" class="h1">**</span></button>
-    </div>
-    <div class="col-md-3" align="center">
-        <h6>Nombre d'avis</h6>
-        <button type="button" class="btn btn-outline-dark"><span id="nbTotalAvis" class="h1">**</span></button>
-    </div>
-</div>
-<div class="row mt-3 mx-auto">
-    <div class="col-md-2 mr-2">
-            <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#detailNotes">
-                    Voir le détail des notes
-            </button>
-    </div>
-    <!-- <div class="col-2 ml-2">
-            <a href="/cours/<%= avis[0].CodeCours %>/createAvis" class="btn btn-secondary">
-                    Ajouter un avis
-            </a>
-    </div> --> 
-</div>
+<div class="container mt-4">
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb bg-light">
+          <li class="breadcrumb-item"><a href="/" class="text-primary">Home</a></li>
+          <li class="breadcrumb-item"><a href="/cours" class="text-primary">Courses</a></li>
+          <li class="breadcrumb-item active" aria-current="page"><%= avis[0].CodeCours %></li>
+        </ol>
+      </nav>
 
-<% for(var i=0; i< avis.length; i++){%>
-   <br>
+    <h1 class="mb-4"><strong><span id="coursID" class="text-primary"><%= avis[0].CodeCours %></span></strong> - <span class="text-secondary"><%= avis[0].NomCours %></span></h1>
+    <p><a href="http://www3.essec.fr/banner.nsf/urlCours/<%= avis[0].CodeCours%>" target="_blank" class="text-primary">Voir le syllabus</a></p>
+  
+    <div class="row mb-5">
+    <div class="col-md-3 text-center mb-3">
+      <div class="essec-stat-card">
+        <h6 class="text-muted mb-2">Note du cours</h6>
+        <span id="moyenneCours" class="essec-stat">**</span><span class="text-muted">/10</span>
+      </div>
+    </div>
+    <div class="col-md-3 text-center mb-3">
+      <div class="essec-stat-card">
+        <h6 class="text-muted mb-2">Pédagogie des profs</h6>
+        <span id="moyenneProfs" class="essec-stat">**</span><span class="text-muted">/10</span>
+      </div>
+    </div>
+    <div class="col-md-3 text-center mb-3">
+      <div class="essec-stat-card">
+        <h6 class="text-muted mb-2">Moyenne points misés</h6>
+        <span id="moyennePointsMises" class="essec-stat">**</span>
+      </div>
+    </div>
+    <div class="col-md-3 text-center mb-3">
+      <div class="essec-stat-card">
+        <h6 class="text-muted mb-2">Nombre d'avis</h6>
+        <span id="nbTotalAvis" class="essec-stat">**</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="course-rating-bar mb-4">
+    <div id="ratingBar" class="rating-bar-inner"></div>
+  </div>
+
+  <div class="row mb-5">
+    <div class="col-md-6">
+      <button type="button" class="btn btn-primary essec-btn" data-toggle="modal" data-target="#detailNotes">
+        Voir le détail des notes
+      </button>
+    </div>
+  </div>
+
+  <div class="essec-card mb-5">
+    <h3 class="essec-card-header">Ajouter un commentaire</h3>
+    <div class="essec-card-body">
+      <form id="newCommentForm">
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="professor">Professeur</label>
+            <select name="professor" class="form-control essec-select" required>
+              <option value="">Sélectionnez un professeur</option>
+              <% if (typeof allProfs !== 'undefined' && allProfs.length > 0) { %>
+                <% allProfs.forEach(function(prof) { %>
+                  <option value="<%= prof._id %>"><%= prof._id %></option>
+                <% }); %>
+              <% } else { %>
+                <option value="">No professors available</option>
+              <% } %>
+            </select>
+          </div>
+          <div class="form-group col-md-3">
+            <label for="courseRating">Note du cours</label>
+            <input type="number" name="courseRating" class="form-control" min="1" max="10" required>
+          </div>
+          <div class="form-group col-md-3">
+            <label for="professorRating">Note du professeur</label>
+            <input type="number" name="professorRating" class="form-control" min="1" max="10" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-4">
+            <label for="dayOfClass">Jour du cours</label>
+            <select name="dayOfClass" class="form-control essec-select" required>
+              <option value="Monday">Lundi</option>
+              <option value="Tuesday">Mardi</option>
+              <option value="Wednesday">Mercredi</option>
+              <option value="Thursday">Jeudi</option>
+              <option value="Friday">Vendredi</option>
+            </select>
+          </div>
+          <div class="form-group col-md-4">
+            <label for="pointsSpent">Points to spend (Max: <span id="userPoints"></span>)</label>
+             <input type="number" class="form-control" id="pointsSpent" name="pointsSpent" min="1" max="140" required>
+          </div>
+          <div class="form-group col-md-4">
+            <label for="trimester">Trimestre</label>
+            <select name="trimester" class="form-control essec-select" required>
+              <option value="T1">T1</option>
+              <option value="T2">T2</option>
+              <option value="T3">T3</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="comment">Commentaire</label>
+          <textarea name="comment" class="form-control" rows="4" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary essec-btn">Soumettre le commentaire</button>
+      </form>
+    </div>
+  </div>
+
+  <h3 class="mb-4 essec-heading">Commentaires des étudiants</h3>
+  <% for(var i=0; i< avis.length; i++){ %>
     <% var datePubli = new Date(avis[i].DatePubli) %>
-    <% if(i%2 == 0){ %>
-        <div class="row bg-light">
-    <% } else { %>
-        <div class="row bg-white">
-    <% } %>
-        <hr>
-        
-        <div class="col-md-8">
-            <br>
-            <h5>Commentaire sur le cours</h5>
-            <p class="text-secondary"><%= avis[i].CommentCours %></p>
-            <h5>Commentaire sur le prof</h5>
-            <p class="text-secondary"><%= avis[i].CommentProf %></p>
-            <br>
-            <p class="text-secondary text-right">Avis donné le <%= datePubli.toLocaleDateString() %> à <%= datePubli.toLocaleTimeString() %></p>
+    <div class="essec-card mb-4">
+      <div class="essec-card-body">
+        <div class="row">
+          <div class="col-md-8">
+            <h5 class="essec-subheading">Commentaire sur le cours</h5>
+            <p class="mb-4"><%= avis[i].CommentCours %></p>
+            <h5 class="essec-subheading">Commentaire sur le prof</h5>
+            <p><%= avis[i].CommentProf %></p>
+          </div>
+          <div class="col-md-4">
+            <ul class="list-unstyled essec-details">
+              <li><strong>Professeur :</strong> 
+                <% for(var j=0; j<avis[i].Professeur.length; j++){ %>
+                  <a href="/prof/<%=avis[i].Professeur[j]%>/avis" class="essec-link"><%=avis[i].Professeur[j]%></a>
+                <%}%>
+              </li>
+              <li><strong>Note Cours :</strong> <%= avis[i].NoteCours %>/10</li>
+              <li><strong>Note Professeur :</strong> <%= avis[i].NoteProf %>/10</li>
+              <li><strong>Jour :</strong> <%= avis[i].Jour %></li>
+              <li><strong>Heure :</strong> <%= avis[i].Heure %></li>
+              <li><strong>Tour :</strong> <%= avis[i].Tour %></li>
+              <li><strong>Points Misés :</strong> <%= avis[i].PointMises %></li>
+              <li><strong>Trimestre :</strong> <%= avis[i].Timestre %></li>
+              <li><strong>Année :</strong> <%= avis[i].Annee %> (<%= avis[i].BDE %>)</li>
+            </ul>
+          </div>
         </div>
-        <div class="col-md-4">
-                <br>
-                <div class="card">
-                    <% if(i%2 == 0){ %>
-                        <div class="card-body bg-white">
-                    <% } else { %>
-                        <div class="card-body bg-light">
-                    <% } %>
-                        <ul>
-                                <li>
-                                    <strong>Professeur :</strong> 
-                                    <% for(var j=0; j<avis[i].Professeur.length; j++){ %>
-                                        <a href="/prof/<%=avis[i].Professeur[j]%>/avis"><%=avis[i].Professeur[j]%></a>
-                                    <%}%>
-                                </li>
-                                <li><strong>Note Cours :</strong> <%= avis[i].NoteCours %></li>
-                                <li><strong>Note Professeur :</strong> <%= avis[i].NoteProf %></li>
-                                <li><strong>Jour : </strong><%= avis[i].Jour %></li>
-                                <li><strong>Heure :</strong> <%= avis[i].Heure %></li>
-                                <li><strong>Tour :</strong> <%= avis[i].Tour %></li>
-                                <li><strong>Points Mises :</strong> <%= avis[i].PointMises %></li>
-                                <li><strong>Trimestre :</strong> <%= avis[i].Timestre %></li>
-                                <li><strong>Année : </strong><%= avis[i].Annee %> (<%= avis[i].BDE %>)</li>
-                        </ul>
-                    </div>
-                </div>
-                <br>
-        </div>
+        <p class="text-muted text-right mb-0">Avis donné le <%= datePubli.toLocaleDateString() %> à <%= datePubli.toLocaleTimeString() %></p>
+      </div>
     </div>
-    <hr>
-    <% } %> 
-
-      <!-- Modal -->
-<div class="modal fade" id="detailNotes" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel"><span class="text-muted">Notes des professeurs pour</span> <%= avis[0].NomCours %></h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <div class="modal-body">
-                <table class="table">
-                        <thead>
-                            <tr align="center">
-                            <th scope="col"></th>
-                            <th scope="col">Moyenne Note Cours</th>
-                            <th scope="col">Moyenne note profs</th>
-                            <th scope="col">Moyenne points mises</th>
-                            <th scope="col">Nombre total d'avis</th>
-                            </tr>
-                        </thead>
-                        <tbody id="notesProfs">
-
-                        </tbody>
-                    </table>
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-        </div>
-        </div>
-    </div>
+  <% } %> 
 </div>
 
+<!-- Modal -->
+<div class="modal fade" id="detailNotes" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header essec-modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Notes des professeurs pour <%= avis[0].NomCours %></h5>
+        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <table class="table table-striped">
+          <thead class="essec-table-header">
+            <tr>
+              <th scope="col">Professeur</th>
+              <th scope="col">Moyenne Note Cours</th>
+              <th scope="col">Moyenne note profs</th>
+              <th scope="col">Moyenne points misés</th>
+              <th scope="col">Nombre total d'avis</th>
+            </tr>
+          </thead>
+          <tbody id="notesProfs">
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+      </div>
+    </div>
+  </div>
+</div>
 
-<script>
+<style>
+  :root {
+    --essec-blue: #1d9edd;
+    --essec-light-blue: #e6f3fa;
+    --essec-dark-blue: #0f4c6a;
+  }
+
+  body {
+    font-family: 'Open Sans', sans-serif;
+  }
+
+  .essec-heading {
+    color: var(--essec-dark-blue);
+    font-weight: 600;
+    border-bottom: 2px solid var(--essec-blue);
+    padding-bottom: 0.5rem;
+  }
+
+  .essec-subheading {
+    color: var(--essec-blue);
+    font-weight: 600;
+  }
+
+  .essec-link {
+    color: var(--essec-blue);
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+
+  .essec-link:hover {
+    color: var(--essec-dark-blue);
+    text-decoration: underline;
+  }
+
+  .essec-btn {
+    background-color: var(--essec-blue);
+    border-color: var(--essec-blue);
+    transition: background-color 0.3s ease;
+  }
+
+  .essec-btn:hover {
+    background-color: var(--essec-dark-blue);
+    border-color: var(--essec-dark-blue);
+  }
+
+  .essec-stat-card {
+    background-color: var(--essec-light-blue);
+    border-radius: 8px;
+    padding: 1rem;
+    height: 100%;
+  }
+
+  .essec-stat {
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: var(--essec-blue);
+  }
+
+  .essec-card {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .essec-card-header {
+    background-color: var(--essec-blue);
+    color: white;
+    padding: 1rem;
+    font-weight: 600;
+  }
+
+  .essec-card-body {
+    padding: 1.5rem;
+  }
+
+  .essec-select {
+    border-color: #ced4da;
+    border-radius: 4px;
+  }
+
+  .essec-details li {
+    margin-bottom: 0.5rem;
+  }
+
+  .essec-modal-header {
+    background-color: var(--essec-blue);
+    color: white;
+  }
+
+  .essec-table-header {
+    background-color: var(--essec-blue);
+    color: white;
+  }
+
+  .course-rating-bar {
+    background-color: #e9ecef;
+    height: 20px;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .rating-bar-inner {
+    height: 100%;
+    transition: width 0.5s ease-in-out;
+  }
+</style>
+
+      
+
+
+<!-- <% if (typeof averagePoints !== 'undefined') { %>
+    updateRatingBar(<%= averagePoints %>);
+<% } else { %>
+    console.log('Average points not available');
+<% } %> -->
+
+<script>  
+// Fetch user's points
+fetch('/user/points')
+    .then(response => response.json())
+    .then(data => {
+      document.getElementById('userPoints').textContent = data.points;
+      document.getElementById('pointsSpent').max = data.points;
+    });
+
+function updateRatingBar(averagePoints) {
+        const bar = document.getElementById('ratingBar');
+        if (bar) {
+            let color;
+            if (averagePoints < 30) color = 'green';
+            else if (averagePoints < 70) color = 'yellow';
+            else color = 'red';
+            bar.style.backgroundColor = color;
+            bar.style.width = `${(averagePoints / 140) * 100}%`;
+        }
+    }
+
+   
+
+    document.getElementById('newCommentForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        fetch('/avis/create', {
+            method: 'POST',
+            body: JSON.stringify(Object.fromEntries(formData)),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert('Comment submitted successfully!');
+            location.reload();
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while submitting the comment.');
+        });
+    });
     var coursID = document.getElementById("coursID").innerHTML;
 
     socket.emit('requestOverallRates', coursID);

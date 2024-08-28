@@ -1,57 +1,357 @@
 <% layout('layout') -%>
 
-<h1>Liste des cours</h1>
-<hr>
+<style>
+    body {
+        font-family: 'Roboto', Arial, sans-serif;
+        font-size: 16px;
+        line-height: 1.6;
+        color: #333;
+        background-color: #f9f9f9;
+    }
+    
+    .allCourses-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 40px 20px;
+        background-color: #fff;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        /* border-radius: 8px; */
+    }
+    
+    h1 {
+        font-size: 36px;
+        color: #1d9edd;
+        margin-bottom: 30px;
+        text-align: center;
+        font-weight: 300;
+    }
+    
+    h3, h4 {
+        color: #1d9edd;
+        font-weight: 500;
+    }
+    
+    a {
+        color: #1d9edd;
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+    
+    a:hover {
+        color: #156a9f;
+    }
+    
+    .btn {
+        background-color: #1d9edd;
+        color: #fff;
+        padding: 12px 24px;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.2s;
+        border-radius: 4px;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    .btn:hover {
+        background-color: #156a9f;
+        transform: translateY(-2px);
+    }
+    
+    table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        margin-top: 30px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+        border-radius: 8px;
+        overflow: hidden;
+    }
+    
+    th {
+        background-color: #1d9edd;
+        color: #fff;
+        text-align: left;
+        padding: 16px;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    td {
+        padding: 16px;
+        border-bottom: 1px solid #e0e0e0;
+        transition: background-color 0.3s;
+    }
+    
+    tr:last-child td {
+        border-bottom: none;
+    }
+    
+    .form-check {
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+    }
+    
+    .form-check-input {
+        margin-right: 10px;
+        cursor: pointer;
+    }
+    
+    .form-check-input:checked {
+        background-color: #1d9edd;
+        border-color: #1d9edd;
+    }
+    
+    .form-check-label {
+        cursor: pointer;
+        
+    }
+    
+    .col-lg-3 {
+        background-color: #f8f9fa;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+    }
+    
+    .course-row:hover {
+        background-color: #f0f8ff;
+    }
+    
+    .filters-title {
+        font-size: 24px;
+        margin-bottom: 20px;
+        color: #1d9edd;
+        font-weight: 300;
+        text-align: center;
+    }
+    
+    .filter-section {
+        margin-bottom: 30px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid #e0e0e0;
+    }
+    
+    .filter-section:last-child {
+        border-bottom: none;
+    }
+    
+    .course-code {
+        font-weight: 700;
+        color: #1d9edd;
+    }
+    
+    .course-name {
+        font-weight: 400;
+    }
+    
+    .rating-cell {
+        font-weight: 700;
+    }
+    .red-box{
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background-color: #ff4444;
+        display: inline-block;
+        margin-right: 5px;
+    }
+    .yellow-box{
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background-color: #ffbb33;
+        display: inline-block;
+        margin-right: 5px;
+    }
+    .green-box{
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background-color: #00C851;
+        display: inline-block;
+        margin-right: 5px;
+    }
+    
+    .rating-red { color: #ff4444; }
+    .rating-yellow { color: #ffbb33; }
+    .rating-green { color: #00C851; }
+    
+    @media (max-width: 992px) {
+        .col-lg-3 {
+            margin-bottom: 30px;
+        }
+    }
+    </style>
+<%
+function isEnglishCourse(courseName) {
+    // Simple check: if the course name contains any French-specific characters, consider it French
+    return !/[éèêëàâäôöûüçîïœæ]/i.test(courseName);
+}
 
-<% var firstLetter= allCourses[0]["_id"]["CodeCours"].charAt(0) %>
+function getRatingColor(nbAvis) {
+    if (nbAvis > 30) return 'red';
+    if (nbAvis > 15) return 'yellow';
+    return 'green';
+}
+%>
 
-<div class="container">
 
-    <div class="col-lg-12">
-        <h2><%= firstLetter %></h2>
-        <table class="table">
-                <thead class="thead-light">
-                    <tr>
-                        <th scope="col">Cours</th>
-                        <th scope="col">Note du cours <span class="text-muted">/10</span></th>
-                        <th scope="col">Note des profs <span class="text-muted">/10</span></th>
-                        <th scope="col">Moyenne points misés</th>
-                        <th scope="col">Nombre d'avis</th>
-                    </tr>
-                </thead>
+<div class="allCourses-container">
+    <h1>Liste des cours</h1>
 
-        <% var nbCourses = allCourses.length;
-            for(var i=0; i<nbCourses; i++){
-                var firstLetterNewCourse = allCourses[i]["_id"]["CodeCours"].charAt(0);
-                if(firstLetterNewCourse != firstLetter){ %>
-                        </table>
-                    </div>
-                    <div class="col-lg-12">
-                        <h2><%= firstLetterNewCourse %></h2>
-                        <table class="table" >
-                        <thead class="thead-light">
+    <div class="row">
+        <div class="col-lg-3">
+            <h2 class="filters-title">Filtres</h2>
+            <div class="filter-section">
+                <h4>Langue</h4>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="english" id="filterEnglish" checked>
+                    <label class="form-check-label" for="filterEnglish">
+                        Anglais
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="french" id="filterFrench" checked>
+                    <label class="form-check-label" for="filterFrench">
+                        Français
+                    </label>
+                </div>
+            </div>
+            <div class="filter-section">
+                <h4>Évaluations des cours</h4>
+                <div class="form-check">
+                    <input class="form-check-input text-red-500 mr-2" type="checkbox" value="red" id="filterRed" checked>
+                    <label class="form-check-label" for="filterRed">
+                        <div class="w-4 h-4 bg-red-500 mr-2 red-box"></div>
+                         <span>(30+)</span>
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="yellow" id="filterYellow" checked>
+                    <label class="form-check-label" for="filterYellow">
+                        <div class="w-4 h-4 bg-yellow-500 mr-2 yellow-box "></div>
+                        <span>(30+)</span>
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="green" id="filterGreen" checked>
+                    <label class="form-check-label" for="filterGreen">
+                        <div class="w-4 h-4 bg-green-500 mr-2 green-box"></div>
+                        <span>(1-15)</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-9">
+            <% var firstLetter = allCourses[0]["_id"]["CodeCours"].charAt(0) %>
+            <div id="courseList">
+                <div class="col-lg-12">
+                    <h2><%= firstLetter %></h2>
+                    <table>
+                        <thead>
                             <tr>
-                                <th scope="col">Cours</th>
-                                <th scope="col">Note du cours <span class="text-muted">/10</span></th>
-                                <th scope="col">Note des profs <span class="text-muted">/10</span></th>
-                                <th scope="col">Moyenne points misés</th>
-                                <th scope="col">Nombre d'avis</th>
+                                <th>Cours</th>
+                                <th>Note du cours</th>
+                                <th>Note des profs</th>
+                                <th>Points misés</th>
+                                <th>Avis</th>
                             </tr>
                         </thead>
-                        <% firstLetter = firstLetterNewCourse;
-                } %>
+                        <tbody>
+                        <% var nbCourses = allCourses.length;
+                            for(var i=0; i<nbCourses; i++){
+                                var firstLetterNewCourse = allCourses[i]["_id"]["CodeCours"].charAt(0);
+                                if(firstLetterNewCourse != firstLetter){ %>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-lg-12">
+                            <h2><%= firstLetterNewCourse %></h2>
+                            <table>
+                            <thead>
+                                <tr>
+                                    <th>Cours</th>
+                                    <th>Note du cours</th>
+                                    <th>Note des profs</th>
+                                    <th>Points misés</th>
+                                    <th>Avis</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            <% firstLetter = firstLetterNewCourse;
+                        } %>
 
-                <tr>
-                    <td><a href="/cours/<%=allCourses[i]['_id']['CodeCours'] %>/avis" ><%= allCourses[i]["_id"]["CodeCours"] %> - <%= allCourses[i]["_id"]["NomCours"] %> </a></td>
-                    <td><%= Math.trunc(allCourses[i]["moyenneCours"] * 10) / 10 %></td>
-                    <td><%= Math.trunc(allCourses[i]["moyenneProfs"] * 10) / 10 %></td>
-                    <td><%= Math.trunc(allCourses[i]["moyennePoints"] * 10) / 10 %></td>
-                    <td><%= allCourses[i]["nbAvis"] %></td>
-                </tr>
-            <%}%>
-
-        </table>
-
-    </div>    
-
+                        <tr class="course-row" data-language="<%= isEnglishCourse(allCourses[i]["_id"]["NomCours"]) ? 'english' : 'french' %>" data-rating="<%= getRatingColor(allCourses[i]["nbAvis"]) %>">
+                            <td>
+                                <a href="/cours/<%=allCourses[i]['_id']['CodeCours'] %>/avis">
+                                    <span class="course-code"><%= allCourses[i]["_id"]["CodeCours"] %></span> - 
+                                    <span class="course-name"><%= allCourses[i]["_id"]["NomCours"] %></span>
+                                </a>
+                            </td>
+                            <td class="rating-cell rating-<%= getRatingColor(allCourses[i]["nbAvis"]) %>">
+                                <%= (Math.round(allCourses[i]["moyenneCours"] * 10) / 10).toFixed(1) %>
+                            </td>
+                            <td class="rating-cell rating-<%= getRatingColor(allCourses[i]["nbAvis"]) %>">
+                                <%= (Math.round(allCourses[i]["moyenneProfs"] * 10) / 10).toFixed(1) %>
+                            </td>
+                            <td><%= Math.round(allCourses[i]["moyennePoints"]) %></td>
+                            <td><%= allCourses[i]["nbAvis"] %></td>
+                        </tr>
+                    <%}%>
+                    </tbody>
+                </table>
+            </div>    
+        </div>
+    </div>
 </div>
+
+<script>
+function isEnglishCourse(courseName) {
+    return !/[éèêëàâäôöûüçîïœæ]/i.test(courseName);
+}
+
+function getRatingColor(nbAvis) {
+    if (nbAvis > 30) return 'red';
+    if (nbAvis > 15) return 'yellow';
+    return 'green';
+}
+
+function applyFilters() {
+    var languageFilters = {
+        english: document.getElementById('filterEnglish').checked,
+        french: document.getElementById('filterFrench').checked
+    };
+    var ratingFilters = {
+        red: document.getElementById('filterRed').checked,
+        yellow: document.getElementById('filterYellow').checked,
+        green: document.getElementById('filterGreen').checked
+    };
+
+    var rows = document.querySelectorAll('.course-row');
+    rows.forEach(function(row) {
+        var language = row.getAttribute('data-language');
+        var rating = row.getAttribute('data-rating');
+        
+        var languageMatch = languageFilters[language];
+        var ratingMatch = ratingFilters[rating];
+        
+        if (languageMatch && ratingMatch) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+}
+
+// Add event listeners to all checkboxes
+document.querySelectorAll('input[type="checkbox"]').forEach(function(checkbox) {
+    checkbox.addEventListener('change', applyFilters);
+});
+
+// Initial application of filters
+applyFilters();
+</script>
